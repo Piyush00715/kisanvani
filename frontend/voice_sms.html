@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KisanVani - Communication</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3e4a3d",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "primary-fixed-dim": "#62df7d",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#4b3f00",
+                        "secondary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "secondary-container": "#fd9e70",
+                        "primary-fixed": "#7ffc97",
+                        "surface-tint": "#006e2d",
+                        "secondary-fixed-dim": "#ffb693",
+                        "secondary": "#944a23",
+                        "on-tertiary-fixed-variant": "#534600",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-container": "#76340e",
+                        "inverse-primary": "#62df7d",
+                        "on-primary-fixed": "#002109",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#dcc66e",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "on-primary-container": "#f7fff2",
+                        "primary-container": "#00873a",
+                        "primary": "#006b2c",
+                        "outline-variant": "#bdcaba",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#f9e287",
+                        "on-secondary-fixed-variant": "#76330d",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-fixed": "#221b00",
+                        "surface-variant": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#005320",
+                        "outline": "#6e7b6c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#6e5e0d",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9ff",
+                        "tertiary-container": "#bfab56",
+                        "on-secondary-fixed": "#351000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter-md": "24px",
+                        "gutter-sm": "16px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  
+    <script>
+        if (!localStorage.getItem('kisanvani_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a modern agriculturist or farmer with a warm, friendly expression, wearing a high-quality utility vest. The background is a soft-focus greenhouse with lush green foliage, reflecting a premium corporate SaaS aesthetic. The lighting is bright, natural, and clean, aligning with a light-mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7xEd-1JlFJYRKCYyo10e7M-9sZYisBn0rnSUh0dwPzO7KK-j1Vq3JurshKwboBMN3I1B7yoxnUqnGDqTM5s-v76woFoDf0LRMWw34K7zs0VNShVKUJZMGncfpQtcl5O2RILyeZwZgr_jmJKbYOgiztmYRHjai8Wj1bNZ17KtZ4KURylPuzJuoqc1v4696EKiXj29Arj3C0MtjnVV4zdXLMlSaAksWMU0iZqVQen8CibXi0PgdOBHc"/>
+</div>
+</div>
+</header>
+<!-- Navigation Drawer (Desktop Only) -->
+<aside class="hidden md:flex fixed left-0 top-16 bottom-0 w-80 bg-surface border-r border-outline-variant/20 shadow-xl flex-col h-full py-6 pr-4 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary text-3xl">agriculture</span>
+<div>
+<p class="font-headline-md text-headline-md font-bold text-primary">KisanVani</p>
+<p class="text-xs text-on-surface-variant/70 uppercase tracking-widest font-bold">Premium Agri-SaaS</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-body-md text-body-md">Crop Recommendation</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-body-md text-body-md">Disease Detection</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
+<span class="material-symbols-outlined">wb_sunny</span>
+<span class="font-body-md text-body-md">Weather Advisory</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 bg-secondary-container text-on-secondary-container font-bold rounded-r-full transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="font-body-md text-body-md">Communication</span>
+</a>
+</nav>
+<div class="px-6 pt-6 border-t border-outline-variant/10">
+<p class="text-xs text-on-surface-variant/50">v1.0.4</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-24 md:pb-8 md:pl-80 min-h-screen px-4 md:px-margin-desktop max-w-7xl mx-auto">
+<header class="mb-8">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Communication</h2>
+<p class="text-on-surface-variant font-body-md">Manage your agricultural alerts and bridge language barriers instantly.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter-md">
+<!-- Send SMS Section -->
+<section class="glass-card rounded-xl p-6 shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.05)] flex flex-col h-full relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-[120px]">sms</span>
+</div>
+<div class="flex items-center gap-3 mb-6">
+<div class="bg-primary-container/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">send</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Send SMS</h3>
+</div>
+<div class="space-y-6 flex-1">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">Phone Number</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50">call</span>
+<input class="w-full bg-white/50 border border-outline-variant rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none text-body-md" placeholder="+91 00000 00000" type="tel"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">Message</label>
+<textarea class="w-full bg-white/50 border border-outline-variant rounded-lg p-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none text-body-md resize-none" placeholder="Type your broadcast alert or message here..." rows="6"></textarea>
+<div class="flex justify-end">
+<span class="text-xs text-on-surface-variant/60 font-label-sm">0 / 160 characters</span>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-md">
+<span class="material-symbols-outlined">campaign</span>
+                        Send Alert
+                    </button>
+<p class="text-center text-xs text-on-surface-variant/40 mt-4 italic">Standard SMS rates may apply based on carrier.</p>
+</div>
+</section>
+<!-- Translation Section -->
+<section class="glass-card rounded-xl p-6 shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.05)] flex flex-col h-full relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-[120px]">translate</span>
+</div>
+<div class="flex items-center gap-3 mb-6">
+<div class="bg-secondary-container/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-secondary">language</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Translation</h3>
+</div>
+<div class="space-y-6 flex-1">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">Source Language</label>
+<select class="w-full bg-white/50 border border-outline-variant rounded-lg px-4 py-3 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-body-md appearance-none cursor-pointer">
+<option>English</option>
+<option>Hindi</option>
+<option>Punjabi</option>
+<option>Marathi</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">Target Language</label>
+<select class="w-full bg-white/50 border border-outline-variant rounded-lg px-4 py-3 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-body-md appearance-none cursor-pointer">
+<option>Hindi</option>
+<option>English</option>
+<option>Telugu</option>
+<option>Bengali</option>
+</select>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant block">Input Text</label>
+<textarea class="w-full bg-white/50 border border-outline-variant rounded-lg p-4 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none text-body-md resize-none" placeholder="Enter text to translate..." rows="4"></textarea>
+</div>
+<div class="p-4 bg-surface-container-low/50 rounded-lg border border-outline-variant/20 min-h-[120px]">
+<p class="text-on-surface-variant/40 text-body-md italic">Translated result will appear here...</p>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full bg-secondary text-on-secondary py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all shadow-md">
+<span class="material-symbols-outlined">auto_fix_high</span>
+                        Translate
+                    </button>
+<div class="flex items-center justify-center gap-4 mt-6">
+<div class="h-px bg-outline-variant/30 flex-1"></div>
+<span class="text-xs text-on-surface-variant/40 uppercase tracking-tighter">Powered by AgriML</span>
+<div class="h-px bg-outline-variant/30 flex-1"></div>
+</div>
+</div>
+</section>
+</div>
+<!-- Extra Decorative/Utility Card -->
+<section class="mt-gutter-md glass-card rounded-xl p-8 border-l-4 border-l-primary flex flex-col md:flex-row items-center gap-8 overflow-hidden relative">
+<div class="flex-1">
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2">Smart History</h4>
+<p class="text-on-surface-variant text-body-md">View logs of all sent alerts and translated conversations to optimize your outreach strategies.</p>
+<div class="mt-6 flex gap-4">
+<button class="px-6 py-2 border border-primary text-primary rounded-full font-label-md hover:bg-primary/5 transition-colors">View SMS Logs</button>
+<button class="px-6 py-2 border border-secondary text-secondary rounded-full font-label-md hover:bg-secondary/5 transition-colors">Translation History</button>
+</div>
+</div>
+<div class="w-full md:w-64 h-40 bg-surface-container-highest rounded-lg overflow-hidden relative shadow-inner">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist 3D rendering of a smartphone with multiple speech bubbles floating around it. The color scheme is soft sage green and warm terracotta, reflecting the KisanVani brand colors. The lighting is soft and studio-like, with long shadows creating a sense of professional depth and high-end tech-enabled agriculture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGRTF-QL6dMzS-Uqou-tqJF_fZ9M6lonvw4Wh1vSTl9XO9V5LdZ9qZV83OYRm-PH7o1Mkj6KWE1ZAjn48xTIvSCrjoksf4X593ojqwah_8wFiC1xVL-D8FoMIN5K5l8jf_7X7MZVSRWAYwzr1IFIZPWAW-gjilHkVGrhV_nWREebC6ntCvVjrMpssLU6LVdG3dWiGLtMsDQ97n1sELeQ_pga7qNTyfoYTNLxIgEebhqUpjsCGLQ8lV"/>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-t border-outline-variant/30 shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] flex justify-around items-center h-20 pb-safe px-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-label-sm text-label-sm">Crops</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label-sm text-label-sm">Detect</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">wb_sunny</span>
+<span class="font-label-sm text-label-sm">Weather</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and simple state management
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Simulating character count for SMS
+        const textAreas = document.querySelectorAll('textarea');
+        const smsTextArea = textAreas[0];
+        const charCount = document.querySelector('.text-xs.text-on-surface-variant\\/60');
+        if(smsTextArea && charCount) {
+            smsTextArea.addEventListener('input', (e) => {
+                const len = e.target.value.length;
+                charCount.textContent = `${len} / 160 characters`;
+                if(len > 160) {
+                    charCount.classList.add('text-error');
+                } else {
+                    charCount.classList.remove('text-error');
+                }
+            });
+        }
+
+        // Send SMS logic
+        const sendBtn = document.querySelector('button.bg-primary');
+        const phoneInput = document.querySelector('input[type="tel"]');
+        if (sendBtn) {
+            sendBtn.addEventListener('click', async () => {
+                const phone = phoneInput.value.trim();
+                const msg = smsTextArea.value.trim();
+                
+                if (!phone || !msg) {
+                    alert('Please enter a phone number and message.');
+                    return;
+                }
+
+                const originalBtnHtml = sendBtn.innerHTML;
+                sendBtn.innerHTML = "Sending...";
+                sendBtn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/communications/send-sms', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({phone_number: phone, message: msg})
+                    });
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.detail || 'Failed to send SMS');
+                    }
+                    alert("SMS sent successfully!");
+                    smsTextArea.value = '';
+                } catch(e) {
+                    alert("Error: " + e.message);
+                } finally {
+                    sendBtn.innerHTML = originalBtnHtml;
+                    sendBtn.disabled = false;
+                }
+            });
+        }
+
+        // Translation logic
+        const transBtn = document.querySelector('button.bg-secondary');
+        const transTextArea = textAreas[1];
+        const transResult = document.querySelector('.min-h-\\[120px\\] p');
+        const selects = document.querySelectorAll('select');
+        
+        if (transBtn) {
+            transBtn.addEventListener('click', async () => {
+                const text = transTextArea.value.trim();
+                const srcLang = selects[0].value;
+                const tgtLang = selects[1].value;
+
+                if (!text) {
+                    alert('Please enter text to translate.');
+                    return;
+                }
+
+                const originalBtnHtml = transBtn.innerHTML;
+                transBtn.innerHTML = "Translating...";
+                transBtn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/communications/translate', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({text: text, source_language: srcLang, target_language: tgtLang})
+                    });
+                    if (!res.ok) {
+                        const err = await res.json();
+                        throw new Error(err.detail || 'Failed to translate');
+                    }
+                    const data = await res.json();
+                    transResult.innerText = data.translated_text;
+                    transResult.classList.remove('italic', 'text-on-surface-variant/40');
+                    transResult.classList.add('text-on-surface');
+                } catch(e) {
+                    alert("Error: " + e.message);
+                } finally {
+                    transBtn.innerHTML = originalBtnHtml;
+                    transBtn.disabled = false;
+                }
+            });
+        }
+    </script>
+<style>
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const navItems = {
+            "dashboard": "/index.html",
+            "potted_plant": "/crop.html",
+            "biotech": "/disease.html",
+            "wb_sunny": "/weather.html",
+            "forum": "/voice_sms.html"
+        };
+        
+        document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
+            const iconName = span.innerText.trim();
+            if (navItems[iconName]) {
+                const parent = span.parentElement;
+                parent.style.cursor = "pointer";
+                parent.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    window.location.href = navItems[iconName];
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    
+
+    // Profile click to logout
+    const profileImgs = document.querySelectorAll('.w-10.h-10.rounded-full');
+    profileImgs.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.title = 'Logout';
+        img.addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("kisanvani_token");
+                localStorage.removeItem("kisanvani_lang");
+                window.location.href = "/login.html";
+            }
+        });
+    });
+
+    
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const headerTitle = document.querySelector('h1.text-primary, h1.text-headline-md');
+    if (headerTitle) {
+        headerTitle.style.cursor = 'pointer';
+        headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
+    }
+    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
+    if (menuBtn && menuBtn.innerText.includes('menu')) {
+        menuBtn.parentElement.addEventListener('click', () => {
+            // For mobile, just go to dashboard if menu clicked
+            window.location.href = '/index.html';
+        });
+    }
+});
+</script>
+
+
+
+
+</body>
+
+</html>

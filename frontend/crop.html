@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KisanVani - Crop Recommendation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3e4a3d",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "primary-fixed-dim": "#62df7d",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#4b3f00",
+                        "secondary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "secondary-container": "#fd9e70",
+                        "primary-fixed": "#7ffc97",
+                        "surface-tint": "#006e2d",
+                        "secondary-fixed-dim": "#ffb693",
+                        "secondary": "#944a23",
+                        "on-tertiary-fixed-variant": "#534600",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-container": "#76340e",
+                        "inverse-primary": "#62df7d",
+                        "on-primary-fixed": "#002109",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#dcc66e",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "on-primary-container": "#f7fff2",
+                        "primary-container": "#00873a",
+                        "primary": "#006b2c",
+                        "outline-variant": "#bdcaba",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#f9e287",
+                        "on-secondary-fixed-variant": "#76330d",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-fixed": "#221b00",
+                        "surface-variant": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#005320",
+                        "outline": "#6e7b6c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#6e5e0d",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9ff",
+                        "tertiary-container": "#bfab56",
+                        "on-secondary-fixed": "#351000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter-md": "24px",
+                        "gutter-sm": "16px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  
+    <script>
+        if (!localStorage.getItem('kisanvani_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution profile portrait of a modern Indian farmer wearing a clean white shirt, smiling warmly against a blurred background of a lush green agricultural field at sunset. The lighting is soft and golden, highlighting a sense of technical expertise and prosperity in a clean, modern agricultural SaaS interface style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmsqAF5ZwTchckG7QtOsB5XRFXmmbPQK_liyBCTPw_Gegon4g88hmd3dgzhbgUo-JlVI4zutEv4EwyM6tBOooSXhy94CBzhpSPY0OaCcRhTphq3v6MvijzeEdCTy6vx8ha0wJZUFl_zsYgmXuLH32gDWxvzyM2JzgUqVG_l1UjIq1-v8btGbbBCXpNyAF-LFdezYAoAYox1tnR0zmzmVxOVac5vY9hDUExolry7ZoBafqer62e3_vT"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-24 pb-32 px-4 md:px-8 max-w-7xl mx-auto w-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Form Section -->
+<div class="lg:col-span-5 space-y-6">
+<div class="space-y-2">
+<h2 class="font-headline-lg text-headline-lg text-primary">Crop Recommendation</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Input your environmental parameters to find the most profitable and suitable crop for your land.</p>
+</div>
+<form class="glass-card p-6 rounded-xl border border-outline-variant/20 shadow-sm space-y-6" id="recommendationForm">
+<!-- State Selection -->
+<div class="space-y-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">State</label>
+<div class="relative">
+<select class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md">
+<option disabled="" selected="" value="">Select your state</option>
+<option>Maharashtra</option>
+<option>Punjab</option>
+<option>Karnataka</option>
+<option>Uttar Pradesh</option>
+<option>Gujarat</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+</div>
+</div>
+<!-- Temperature -->
+<div class="space-y-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Temperature in °C</label>
+<div class="relative">
+<input class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 28" type="number"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline">device_thermostat</span>
+</div>
+</div>
+<!-- Month -->
+<div class="space-y-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Month</label>
+<div class="relative">
+<select class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md">
+<option disabled="" selected="" value="">Select sowing month</option>
+<option>January</option>
+<option>June</option>
+<option>October</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">calendar_month</span>
+</div>
+</div>
+<!-- Soil Type -->
+<div class="space-y-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Soil Type</label>
+<div class="relative flex flex-wrap gap-3 mt-2">
+<label class="flex-1 min-w-[100px]">
+<input class="hidden peer" name="soil" type="radio"/>
+<div class="p-3 border border-outline-variant rounded-lg text-center cursor-pointer peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary transition-all hover:bg-surface-container-low">
+<span class="font-label-md text-label-md">Alluvial</span>
+</div>
+</label>
+<label class="flex-1 min-w-[100px]">
+<input class="hidden peer" name="soil" type="radio"/>
+<div class="p-3 border border-outline-variant rounded-lg text-center cursor-pointer peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary transition-all hover:bg-surface-container-low">
+<span class="font-label-md text-label-md">Clayey</span>
+</div>
+</label>
+<label class="flex-1 min-w-[100px]">
+<input class="hidden peer" name="soil" type="radio"/>
+<div class="p-3 border border-outline-variant rounded-lg text-center cursor-pointer peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary transition-all hover:bg-surface-container-low">
+<span class="font-label-md text-label-md">Red</span>
+</div>
+</label>
+</div>
+</div>
+<!-- CTA Button -->
+<button class="w-full bg-primary hover:bg-primary/90 text-on-primary font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98] flex justify-center items-center gap-2" onclick="predictCrop()" type="button">
+<span class="material-symbols-outlined">analytics</span>
+                        Predict Best Crop
+                    </button>
+</form>
+</div>
+<!-- Right Column: Results Placeholder Section -->
+<div class="lg:col-span-7 h-full">
+<div class="glass-card rounded-2xl border-2 border-dashed border-outline-variant/50 h-full min-h-[400px] flex flex-col items-center justify-center p-12 text-center group transition-colors hover:border-primary/30" id="resultsContainer">
+<div class="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-outline text-5xl group-hover:text-primary transition-colors">potted_plant</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant mb-2">Recommendation will appear here.</h3>
+<p class="font-body-md text-body-md text-outline max-w-xs">Complete the form on the left to analyze soil health and weather data for your personalized crop prediction.</p>
+<!-- Decorative Background for empty state -->
+<div class="mt-8 opacity-20 w-full max-w-md h-40 rounded-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+<img class="w-full h-full object-cover" data-alt="A wide-angle landscape photograph of a perfectly organized, lush green commercial vegetable farm with neat rows of diverse crops stretching into the distance. The lighting is crisp early morning daylight, emphasizing professional agricultural management and fertility. The style is bright and clean to match a corporate agritech dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIY-sUVW2YY8jyiNTuKNS6S_5hCo9_mtRgoF6DeTi1ay3Gvodt958qMwUnjfsYJ5xQA2MMr8hI-tmjFUVUPMVMYEaT9d916U9tSgb6kkhs6GyAJbPIbpWd6BjU4RnToPT6wRJz3J8F3vM_N-GFDCSJTbxSJdwyEs81MFwugwi6ZFRQggYm2s2qetjP_Y2dRkbI6Ulu0t7SzWJbP2q_MrZy5vUD9XKtv_WAl-vVORoH76fcAnHnNfTT"/>
+</div>
+</div>
+<!-- Hidden Success State Template (for JS interaction demo) -->
+<div class="hidden glass-card rounded-2xl border border-primary/20 p-8 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500" id="successState">
+<div class="flex items-start justify-between mb-8">
+<div>
+<span class="inline-block bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-4">Recommended Choice</span>
+<h3 class="font-headline-xl text-headline-xl text-primary">Sugarcane</h3>
+</div>
+<div class="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-4xl">eco</span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="font-label-sm text-label-sm text-outline uppercase">Confidence</p>
+<p class="font-headline-md text-headline-md text-on-surface">94%</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="font-label-sm text-label-sm text-outline uppercase">Est. Yield</p>
+<p class="font-headline-md text-headline-md text-on-surface">82 T/ha</p>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl">
+<p class="font-label-sm text-label-sm text-outline uppercase">Profitability</p>
+<p class="font-headline-md text-headline-md text-primary">High</p>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-on-surface font-bold">Why this crop?</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Based on the Clayey Soil type in Maharashtra during June, Sugarcane offers the highest climate resilience and market price potential. Current soil moisture levels are optimal for initial sowing phases.</p>
+</div>
+<button class="w-full mt-8 border border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary-container/10 transition-colors">
+                        View Detailed Cultivation Guide
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/80 backdrop-blur-md border-t border-outline-variant/30 shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] flex justify-around items-center h-20 pb-safe px-2 rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-label-sm text-label-sm">Crops</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label-sm text-label-sm">Detect</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">wb_sunny</span>
+<span class="font-label-sm text-label-sm">Weather</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</div>
+</nav>
+    <script>
+        const monthMap = {
+            "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
+            "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12
+        };
+
+        async function predictCrop() {
+            const container = document.getElementById('resultsContainer');
+            const success = document.getElementById('successState');
+            const btn = event.currentTarget;
+
+            const selects = document.querySelectorAll('select');
+            const state = selects[0].value;
+            const monthText = selects[1].value;
+            const temp = document.querySelector('input[type="number"]').value;
+            const soilRadio = document.querySelector('input[name="soil"]:checked');
+
+            if (!state || !monthText || !temp || !soilRadio) {
+                alert("Please fill in all fields (State, Temperature, Month, and Soil Type).");
+                return;
+            }
+
+            const month = monthMap[monthText] || 1;
+            const soil_type = soilRadio.nextElementSibling.innerText.trim();
+
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Analyzing Data...`;
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/crop/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        state: state,
+                        temperature: parseFloat(temp),
+                        month: month,
+                        soil_type: soil_type
+                    })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.detail || "Failed to fetch prediction");
+                }
+
+                const data = await response.json();
+                
+                // Update success UI with data
+                document.querySelector('#successState h3').innerText = data.crop;
+                const details = data.details || {};
+                const stats = document.querySelectorAll('#successState .font-headline-md.text-on-surface');
+                if (stats.length >= 2) {
+                    stats[0].innerText = "94%"; // Mock confidence
+                    stats[1].innerText = details.Est_Yield || "N/A";
+                }
+                const profitability = document.querySelector('#successState .font-headline-md.text-primary');
+                if (profitability) profitability.innerText = details.Profitability || "High";
+                
+                const whyText = document.querySelector('#successState p.text-on-surface-variant');
+                if (whyText) {
+                    whyText.innerText = details.Why || `Based on ${soil_type} Soil in ${state} during ${monthText}, ${data.crop} is highly recommended.`;
+                }
+
+                container.classList.add('hidden');
+                success.classList.remove('hidden');
+            } catch (error) {
+                alert("Error: " + error.message);
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const navItems = {
+            "dashboard": "/index.html",
+            "potted_plant": "/crop.html",
+            "biotech": "/disease.html",
+            "wb_sunny": "/weather.html",
+            "forum": "/voice_sms.html"
+        };
+        
+        document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
+            const iconName = span.innerText.trim();
+            if (navItems[iconName]) {
+                const parent = span.parentElement;
+                parent.style.cursor = "pointer";
+                parent.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    window.location.href = navItems[iconName];
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    
+
+    // Profile click to logout
+    const profileImgs = document.querySelectorAll('.w-10.h-10.rounded-full');
+    profileImgs.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.title = 'Logout';
+        img.addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("kisanvani_token");
+                localStorage.removeItem("kisanvani_lang");
+                window.location.href = "/login.html";
+            }
+        });
+    });
+
+    
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const headerTitle = document.querySelector('h1.text-primary, h1.text-headline-md');
+    if (headerTitle) {
+        headerTitle.style.cursor = 'pointer';
+        headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
+    }
+    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
+    if (menuBtn && menuBtn.innerText.includes('menu')) {
+        menuBtn.parentElement.addEventListener('click', () => {
+            // For mobile, just go to dashboard if menu clicked
+            window.location.href = '/index.html';
+        });
+    }
+});
+</script>
+
+
+
+
+</body>
+
+</html>

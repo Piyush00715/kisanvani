@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>KisanVani - Login</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-container": "#00873a",
+                        "on-primary-container": "#f7fff2",
+                        "primary": "#006b2c",
+                        "on-primary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "surface-variant": "#d3e4fe",
+                        "on-surface-variant": "#3e4a3d",
+                        "outline-variant": "#bdcaba",
+                        "outline": "#6e7b6c",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="glass-card w-full max-w-md rounded-2xl p-8 transition-all duration-300">
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-container/20 text-primary mb-4">
+                <span class="material-symbols-outlined text-4xl">agriculture</span>
+            </div>
+            <h1 class="text-3xl font-bold text-on-surface">KisanVani</h1>
+            <p class="text-on-surface-variant mt-2">Sign in to your farmer dashboard</p>
+        </div>
+
+        <!-- Phone Section -->
+        <div id="phoneSection" class="space-y-6">
+            <div>
+                <label class="block text-sm font-semibold text-on-surface-variant mb-2">Phone Number</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant/50">call</span>
+                    <input id="phoneInput" type="tel" class="w-full bg-surface border border-outline-variant rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="+91 XXXXX XXXXX">
+                </div>
+            </div>
+            <button id="sendOtpBtn" class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
+                Send OTP <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+        </div>
+
+        <!-- OTP Section -->
+        <div id="otpSection" class="space-y-6 hidden">
+            <div>
+                <label class="block text-sm font-semibold text-on-surface-variant mb-2">Enter OTP</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-variant/50">password</span>
+                    <input id="otpInput" type="text" class="w-full bg-surface border border-outline-variant rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-center tracking-widest text-lg font-bold" placeholder="• • • • • •">
+                </div>
+            </div>
+            <button id="verifyOtpBtn" class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
+                Verify OTP <span class="material-symbols-outlined text-sm">check_circle</span>
+            </button>
+            <button id="backToPhoneBtn" class="w-full text-primary text-sm font-semibold hover:underline mt-2">Change Phone Number</button>
+        </div>
+
+        <!-- Register Section -->
+        <div id="registerSection" class="space-y-6 hidden">
+            <div class="bg-primary-container/10 p-4 rounded-xl mb-4 border border-primary-container/20">
+                <p class="text-sm text-primary font-medium flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">info</span>
+                    Looks like you're new here! Let's set up your profile.
+                </p>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-on-surface-variant mb-2">Select your State</label>
+                <select id="stateSelect" class="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <option value="" disabled selected>-- Select State --</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <button id="registerBtn" class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
+                Complete Registration <span class="material-symbols-outlined text-sm">how_to_reg</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const phoneSection = document.getElementById('phoneSection');
+        const otpSection = document.getElementById('otpSection');
+        const registerSection = document.getElementById('registerSection');
+        
+        const phoneInput = document.getElementById('phoneInput');
+        const otpInput = document.getElementById('otpInput');
+        const stateSelect = document.getElementById('stateSelect');
+        
+        const sendOtpBtn = document.getElementById('sendOtpBtn');
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const backToPhoneBtn = document.getElementById('backToPhoneBtn');
+
+        let currentPhone = "";
+
+        // Check if already logged in
+        if (localStorage.getItem("kisanvani_token")) {
+            window.location.href = "/index.html";
+        }
+
+        sendOtpBtn.addEventListener('click', async () => {
+            const phone = phoneInput.value.trim();
+            if(!phone) { alert("Please enter phone number."); return; }
+            
+            sendOtpBtn.innerText = "Sending...";
+            sendOtpBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/auth/send-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone_number: phone })
+                });
+                if(!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.detail || "Failed to send OTP");
+                }
+                currentPhone = phone;
+                phoneSection.classList.add('hidden');
+                otpSection.classList.remove('hidden');
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                sendOtpBtn.innerHTML = `Send OTP <span class="material-symbols-outlined text-sm">arrow_forward</span>`;
+                sendOtpBtn.disabled = false;
+            }
+        });
+
+        backToPhoneBtn.addEventListener('click', () => {
+            otpSection.classList.add('hidden');
+            phoneSection.classList.remove('hidden');
+        });
+
+        verifyOtpBtn.addEventListener('click', async () => {
+            const otp = otpInput.value.trim();
+            if(!otp) { alert("Please enter OTP."); return; }
+            
+            verifyOtpBtn.innerText = "Verifying...";
+            verifyOtpBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone_number: currentPhone, otp: otp })
+                });
+                if(!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.detail || "Invalid OTP");
+                }
+                const data = await res.json();
+                
+                if (data.is_new_user) {
+                    otpSection.classList.add('hidden');
+                    registerSection.classList.remove('hidden');
+                } else {
+                    // Existing user
+                    localStorage.setItem("kisanvani_token", data.token);
+                    localStorage.setItem("kisanvani_lang", data.preferred_language);
+
+                    window.location.href = "/index.html";
+                }
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                verifyOtpBtn.innerHTML = `Verify OTP <span class="material-symbols-outlined text-sm">check_circle</span>`;
+                verifyOtpBtn.disabled = false;
+            }
+        });
+
+        registerBtn.addEventListener('click', async () => {
+            const state = stateSelect.value;
+            if(!state) { alert("Please select a state."); return; }
+            
+            registerBtn.innerText = "Registering...";
+            registerBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone_number: currentPhone, state: state })
+                });
+                if(!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.detail || "Registration failed");
+                }
+                const data = await res.json();
+                localStorage.setItem("kisanvani_token", data.token);
+                localStorage.setItem("kisanvani_lang", data.preferred_language);
+
+                window.location.href = "/index.html";
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                registerBtn.innerHTML = `Complete Registration <span class="material-symbols-outlined text-sm">how_to_reg</span>`;
+                registerBtn.disabled = false;
+            }
+        });
+    </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const headerTitle = document.querySelector('h1.text-primary, h1.text-headline-md');
+    if (headerTitle) {
+        headerTitle.style.cursor = 'pointer';
+        headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
+    }
+    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
+    if (menuBtn && menuBtn.innerText.includes('menu')) {
+        menuBtn.parentElement.addEventListener('click', () => {
+            // For mobile, just go to dashboard if menu clicked
+            window.location.href = '/index.html';
+        });
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KisanVani - Plant Disease Detection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #16A34A, transparent);
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(256px); }
+        }
+        .step-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3e4a3d",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface": "#f8f9ff",
+                        "surface-container-low": "#eff4ff",
+                        "primary-fixed-dim": "#62df7d",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#4b3f00",
+                        "secondary-fixed": "#ffdbcc",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#0b1c30",
+                        "secondary-container": "#fd9e70",
+                        "primary-fixed": "#7ffc97",
+                        "surface-tint": "#006e2d",
+                        "secondary-fixed-dim": "#ffb693",
+                        "secondary": "#944a23",
+                        "on-tertiary-fixed-variant": "#534600",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-container": "#76340e",
+                        "inverse-primary": "#62df7d",
+                        "on-primary-fixed": "#002109",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#dcc66e",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container": "#e5eeff",
+                        "on-primary-container": "#f7fff2",
+                        "primary-container": "#00873a",
+                        "primary": "#006b2c",
+                        "outline-variant": "#bdcaba",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#f9e287",
+                        "on-secondary-fixed-variant": "#76330d",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-fixed": "#221b00",
+                        "surface-variant": "#d3e4fe",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#005320",
+                        "outline": "#6e7b6c",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#6e5e0d",
+                        "error-container": "#ffdad6",
+                        "background": "#f8f9ff",
+                        "tertiary-container": "#bfab56",
+                        "on-secondary-fixed": "#351000"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  
+    <script>
+        if (!localStorage.getItem('kisanvani_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="text-primary p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
+</div>
+<div class="h-10 w-10 rounded-full bg-surface-container-high border border-outline-variant/30 overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a modern farmer in a light-filled office, wearing a clean linen shirt. The lighting is warm and natural, suggesting a successful agribusiness environment. The background shows a hint of digital agricultural charts, maintaining a corporate and tech-savvy mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKLYK8TbXxVmYuqnxOz4-S901osIXhf0RxOz4BZ3crV77wn9aZ2asZadq6ZsmvVibQh72QtnLuw3Ptq87hg3KCEIiUU0cmKsDQWAcZmCk_o8WF7dkqiBU8Ni-UlluXPT3fEmgnw0srpUdbxpDFZjoR1i_r7icmXTFWNxUCoq5lQoI4mL_akPAdhAdmoRXYnshiZLUltTBYhsguUKQPBnrjZML-j5mFQ0rkyaxEgfqAWhsKiMUalvM"/>
+</div>
+</header>
+<main class="pt-24 px-4 md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Detection Hero Section -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Upload Area -->
+<div class="lg:col-span-7 space-y-6">
+<div class="glass-card border border-outline-variant/20 rounded-xl p-8 shadow-sm flex flex-col items-center text-center">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Disease Detection</h2>
+<p class="text-on-surface-variant mb-8 max-w-md">Upload or drag a clear photograph of the affected plant leaf for instant AI-powered diagnostic analysis.</p>
+<div class="relative group cursor-pointer w-full max-w-lg aspect-video rounded-xl border-2 border-dashed border-outline-variant transition-all hover:border-primary flex flex-col items-center justify-center bg-surface-container-lowest/50" id="dropzone">
+<input accept="image/*" class="hidden" id="fileInput" type="file"/>
+<div class="flex flex-col items-center" id="uploadPlaceholder">
+<div class="bg-primary-container/10 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-5xl">cloud_upload</span>
+</div>
+<span class="font-label-md text-label-md text-primary">Click to upload or drag &amp; drop</span>
+<span class="text-xs text-on-surface-variant mt-1">JPEG, PNG up to 10MB</span>
+</div>
+<div class="hidden absolute inset-0 w-full h-full rounded-lg overflow-hidden" id="previewContainer">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-definition macro photograph of a vibrant green tomato leaf with subtle early blight brown spots. The lighting is crisp and clinical, emphasizing the texture of the plant and the details of the disease. The background is a clean, neutral gray, focusing all attention on the specimen." id="imagePreview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQw5-0l7JtoF7DyVtWN-w5IQlAMriR6EP0HTZT4YxVZ40OcLErx0yDXkU9aPfKBP2PXlHxtPaCO3kQH9qLsMztsILBjhTY-V9ktlYScNpXeo54S5Xrd2ExqsPiKHJ3jc6Nr9HrMWXTBdt6nL0_392RS7tRb_cqv7v4laI1SLEw5FnpfhFhVQk7ZKN6SHfcHaU1Uznk6HPW8GLa931A7oLJmqtPBw-5udJFPoTfiU7KCPFD9YeFxisW"/>
+<div class="hidden absolute top-0 left-0 w-full scan-line" id="scanningLine"></div>
+</div>
+</div>
+<button class="mt-8 px-8 py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed" id="scanBtn">
+<span class="material-symbols-outlined">biotech</span>
+                        Scan for Disease
+                    </button>
+</div>
+<!-- Recent History (Asymmetric Accent) -->
+<div class="flex flex-wrap gap-4 pt-4">
+<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="text-label-sm font-label-sm">Recent: Maize Rust (98% match)</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Results Placeholder/Content -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Empty State -->
+<div class="h-full flex flex-col items-center justify-center p-8 border border-dashed border-outline-variant/30 rounded-xl bg-surface-container-low text-center min-h-[400px]" id="emptyResults">
+<span class="material-symbols-outlined text-outline text-6xl mb-4">clinical_notes</span>
+<h3 class="font-headline-md text-headline-md text-on-surface-variant">Waiting for Diagnosis</h3>
+<p class="text-on-surface-variant/70 mt-2">Upload a photo to see the disease name, treatment steps, and product recommendations.</p>
+</div>
+<!-- Actual Results (Hidden initially) -->
+<div class="hidden space-y-6" id="activeResults">
+<!-- Diagnosis Card -->
+<div class="glass-card border border-outline-variant/20 rounded-xl p-6 shadow-sm overflow-hidden relative">
+<div class="absolute top-0 right-0 bg-error/10 text-error px-4 py-1 rounded-bl-xl font-label-sm text-xs">High Confidence</div>
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant/70">Diagnosis Result</span>
+<h3 class="font-headline-lg text-headline-lg text-error mt-1">Late Blight</h3>
+<p class="text-on-surface-variant mt-2 text-body-md font-body-md">Caused by the oomycete Phytophthora infestans, this disease spreads rapidly in humid conditions.</p>
+</div>
+<!-- Treatment Steps -->
+<div class="glass-card border border-outline-variant/20 rounded-xl p-6 shadow-sm">
+<h4 class="font-label-md text-label-md text-on-surface flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">healing</span>
+                            Treatment Protocol
+                        </h4>
+<ul class="space-y-4">
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-bold">1</span>
+<p class="text-body-md text-on-surface-variant">Prune and destroy infected leaves immediately to prevent spore dispersal.</p>
+</li>
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-bold">2</span>
+<p class="text-body-md text-on-surface-variant">Apply a copper-based fungicide to the remaining healthy foliage as a protective barrier.</p>
+</li>
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-bold">3</span>
+<p class="text-body-md text-on-surface-variant">Improve air circulation by spacing out plants and avoiding overhead irrigation.</p>
+</li>
+</ul>
+</div>
+<!-- Recommended Product -->
+<div class="bg-gradient-to-br from-primary-container to-primary rounded-xl p-6 shadow-xl text-on-primary-container relative overflow-hidden group">
+<div class="relative z-10">
+<span class="px-2 py-1 bg-white/20 rounded text-[10px] uppercase font-bold tracking-widest">Recommended Supplement</span>
+<div class="flex items-center justify-between mt-4">
+<div>
+<h4 class="font-headline-md text-headline-md leading-tight">AgriGuard Pro-Shield Fungicide</h4>
+<p class="text-white/80 text-body-md mt-1">High-potency copper formula for rapid blight control.</p>
+</div>
+<div class="w-16 h-16 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-4xl">shopping_basket</span>
+</div>
+</div>
+<a class="mt-6 inline-flex items-center gap-2 bg-white text-primary px-6 py-2 rounded-lg font-label-md text-label-md hover:shadow-lg transition-shadow" href="#">
+                                Buy Now
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<!-- Abstract pattern decoration -->
+<div class="absolute -right-8 -bottom-8 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+<span class="material-symbols-outlined" style="font-size: 200px;">potted_plant</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-t border-outline-variant/30 shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] rounded-t-xl flex justify-around items-center w-full h-20 pb-safe px-2">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">potted_plant</span>
+<span class="font-label-sm text-label-sm">Crops</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label-sm text-label-sm">Detect</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">wb_sunny</span>
+<span class="font-label-sm text-label-sm">Weather</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+</nav>
+<script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const scanBtn = document.getElementById('scanBtn');
+        const scanningLine = document.getElementById('scanningLine');
+        const emptyResults = document.getElementById('emptyResults');
+        const activeResults = document.getElementById('activeResults');
+
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    uploadPlaceholder.classList.add('hidden');
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        scanBtn.addEventListener('click', async () => {
+            if (fileInput.files.length === 0) {
+                alert('Please upload an image first.');
+                return;
+            }
+
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = `<span class="material-symbols-outlined animate-spin">refresh</span> Analyzing Tissue...`;
+            scanningLine.classList.remove('hidden');
+
+            try {
+                const formData = new FormData();
+                formData.append("image", fileInput.files[0]);
+
+                const response = await fetch('/api/disease/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.detail || "Failed to analyze image");
+                }
+
+                const data = await response.json();
+                
+                // Update UI
+                const diseaseNameEl = activeResults.querySelector('h3');
+                if (diseaseNameEl) diseaseNameEl.innerText = data.disease;
+                
+                const descriptionEl = activeResults.querySelector('h3 + p');
+                if (descriptionEl) descriptionEl.innerText = data.description;
+                
+                // Prevention steps
+                const ul = activeResults.querySelector('ul');
+                if (ul) {
+                    ul.innerHTML = '';
+                    const steps = data.prevention.split('.').filter(s => s.trim().length > 0);
+                    steps.forEach((step, idx) => {
+                        const li = document.createElement('li');
+                        li.className = 'flex gap-4';
+                        li.innerHTML = `
+                            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+                            <p class="text-body-md text-on-surface-variant">${step.trim()}.</p>
+                        `;
+                        ul.appendChild(li);
+                    });
+                }
+                
+                // Supplement
+                const suppName = activeResults.querySelector('h4.leading-tight');
+                if (suppName) suppName.innerText = data.recommended_supplement.name || "Standard Care";
+                const suppDesc = suppName ? suppName.nextElementSibling : null;
+                if (suppDesc) suppDesc.innerText = "Recommended treatment for " + data.disease;
+                
+                const buyLink = activeResults.querySelector('a');
+                if (buyLink) buyLink.href = data.recommended_supplement.buy_link || "#";
+
+                scanningLine.classList.add('hidden');
+                emptyResults.classList.add('hidden');
+                activeResults.classList.remove('hidden');
+                activeResults.classList.add('animate-fade-in');
+                scanBtn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Analysis Complete`;
+                scanBtn.classList.replace('bg-primary', 'bg-on-surface');
+            } catch (err) {
+                alert("Error: " + err.message);
+                scanningLine.classList.add('hidden');
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = `<span class="material-symbols-outlined">biotech</span> Scan for Disease`;
+            }
+        });
+
+        // Simple Drag and Drop handling
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            const event = new Event('change');
+            fileInput.dispatchEvent(event);
+        });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const navItems = {
+            "dashboard": "/index.html",
+            "potted_plant": "/crop.html",
+            "biotech": "/disease.html",
+            "wb_sunny": "/weather.html",
+            "forum": "/voice_sms.html"
+        };
+        
+        document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
+            const iconName = span.innerText.trim();
+            if (navItems[iconName]) {
+                const parent = span.parentElement;
+                parent.style.cursor = "pointer";
+                parent.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    window.location.href = navItems[iconName];
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    
+
+    // Profile click to logout
+    const profileImgs = document.querySelectorAll('.w-10.h-10.rounded-full');
+    profileImgs.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.title = 'Logout';
+        img.addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("kisanvani_token");
+                localStorage.removeItem("kisanvani_lang");
+                window.location.href = "/login.html";
+            }
+        });
+    });
+
+    
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const headerTitle = document.querySelector('h1.text-primary, h1.text-headline-md');
+    if (headerTitle) {
+        headerTitle.style.cursor = 'pointer';
+        headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
+    }
+    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
+    if (menuBtn && menuBtn.innerText.includes('menu')) {
+        menuBtn.parentElement.addEventListener('click', () => {
+            // For mobile, just go to dashboard if menu clicked
+            window.location.href = '/index.html';
+        });
+    }
+});
+</script>
+
+
+
+
+</body>
+
+</html>

@@ -12,6 +12,10 @@ from app.routers import crop_recommendation
 from app.routers import disease_detection
 from app.routers import weather_advisory
 from app.routers import voice_sms
+from app.routers import auth
+
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import RedirectResponse
 
 app = FastAPI(title="KisanVani API")
 
@@ -23,11 +27,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Root endpoint redirects to the dashboard HTML
 @app.get("/")
+def read_root():
+    return RedirectResponse(url="/index.html")
+
+# Health check at /api/health
+@app.get("/api/health")
 def health_check():
     return {"status": "KisanVani backend running"}
 
+# Include routers
 app.include_router(crop_recommendation.router, prefix="/api/crop", tags=["Crop Recommendation"])
 app.include_router(disease_detection.router, prefix="/api/disease", tags=["Disease Detection"])
 app.include_router(weather_advisory.router, prefix="/api/weather", tags=["Weather Advisory"])
 app.include_router(voice_sms.router, prefix="/api/communications", tags=["Voice & SMS"])
+app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
+
+# Mount static files (this must be at the end so it doesn't shadow /api/ routes)
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KisanVani - Premium Agri-SaaS Dashboard</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#3e4a3d",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface": "#f8f9ff",
+                    "surface-container-low": "#eff4ff",
+                    "primary-fixed-dim": "#62df7d",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#4b3f00",
+                    "secondary-fixed": "#ffdbcc",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#0b1c30",
+                    "secondary-container": "#fd9e70",
+                    "primary-fixed": "#7ffc97",
+                    "surface-tint": "#006e2d",
+                    "secondary-fixed-dim": "#ffb693",
+                    "secondary": "#944a23",
+                    "on-tertiary-fixed-variant": "#534600",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-secondary-container": "#76340e",
+                    "inverse-primary": "#62df7d",
+                    "on-primary-fixed": "#002109",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#dcc66e",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container": "#e5eeff",
+                    "on-primary-container": "#f7fff2",
+                    "primary-container": "#00873a",
+                    "primary": "#006b2c",
+                    "outline-variant": "#bdcaba",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#f9e287",
+                    "on-secondary-fixed-variant": "#76330d",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-fixed": "#221b00",
+                    "surface-variant": "#d3e4fe",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#005320",
+                    "outline": "#6e7b6c",
+                    "inverse-surface": "#213145",
+                    "tertiary": "#6e5e0d",
+                    "error-container": "#ffdad6",
+                    "background": "#f8f9ff",
+                    "tertiary-container": "#bfab56",
+                    "on-secondary-fixed": "#351000"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter-md": "24px",
+                    "gutter-sm": "16px",
+                    "container-max": "1440px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-glow {
+            box-shadow: 0 0 20px rgba(0, 107, 44, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  
+    <script>
+        if (!localStorage.getItem('kisanvani_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0 md:pl-80">
+<!-- Top AppBar (Mobile/Web) -->
+<nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md text-primary dark:text-primary-fixed-dim fixed top-0 w-full z-50 border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined md:hidden p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full" data-icon="menu">menu</button>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">KisanVani</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full" data-icon="notifications">notifications</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border-2 border-primary/20 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a cheerful, modern farmer wearing a clean collared shirt, set against a soft-focus background of a sun-drenched organic greenhouse. The lighting is warm and natural, following a bright, clean corporate aesthetic with high-key whites and lush green accents. The overall mood is one of technical expertise and reliable growth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQhlTfyPWCxBT_2k1TatLeTNycVq9j7jUbKfAYEzDUgKS3WgzngnOlz_uUip4hgfW1NV41sosltwQzs8t8YjNxMibG3bEG1h7ypZLPgjnm0Sjnt-98nBlEzRPQRqmH1LCNxT5v6MI_v0MAq_FdcTnqS8azI7Sx6rIf2V-INwFCNYLeXuk3a6Bm7hpNI47bBeDY1_241736xcqWCRaLWedcRSFxuR6ZK2ss-G1ONMtKJOo8nEPjCLw8"/>
+</div>
+</div>
+</nav>
+<!-- Navigation Drawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-full w-80 fixed left-0 top-0 z-[60] bg-surface dark:bg-surface-dim border-r border-outline-variant/20 shadow-xl py-6 pr-4">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-70">Premium Agri-SaaS</p>
+</div>
+<nav class="flex flex-col gap-1 grow">
+<a class="flex items-center gap-4 px-6 py-4 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary font-bold rounded-r-full active:scale-98 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="potted_plant">potted_plant</span>
+<span class="font-body-md text-body-md">Crop Recommendation</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-body-md text-body-md">Disease Detection</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="wb_sunny">wb_sunny</span>
+<span class="font-body-md text-body-md">Weather Advisory</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-body-md text-body-md">Communication</span>
+</a>
+</nav>
+<div class="px-6 mt-auto border-t border-outline-variant/10 pt-6">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">Farmer Profile</p>
+<p class="text-xs text-on-surface-variant">v1.0.4</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-20 px-4 md:px-margin-desktop md:pt-24 max-w-container-max mx-auto">
+<!-- Hero Section -->
+<section class="relative overflow-hidden rounded-3xl bg-primary-container text-on-primary-container p-8 md:p-12 mb-gutter-md shadow-lg">
+<div class="relative z-10">
+<h2 class="font-headline-xl text-headline-xl mb-2 flex items-center gap-3">
+                    Hello, Farmer! 👋
+                </h2>
+<p class="font-body-lg text-body-lg opacity-90 max-w-xl">
+                    Empowering Farmers with AI. Your digital companion for optimized yields and sustainable farming.
+                </p>
+<div class="mt-8 flex flex-wrap gap-4">
+<button class="bg-surface text-primary px-6 py-3 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                        New Field Scan
+                    </button>
+<button class="border border-white/30 text-white px-6 py-3 rounded-full font-label-md text-label-md hover:bg-white/10 transition-all active:scale-95">
+                        View Reports
+                    </button>
+</div>
+</div>
+<!-- Abstract Background Element -->
+<div class="absolute -right-20 -bottom-20 w-96 h-96 bg-primary-fixed-dim/20 rounded-full blur-3xl"></div>
+<div class="absolute right-10 top-10 opacity-20 transform rotate-12">
+<span class="material-symbols-outlined !text-[160px]" data-icon="potted_plant">potted_plant</span>
+</div>
+</section>
+<!-- Feature Bento Grid (2x2) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter-md mb-gutter-md">
+<!-- Crop Recommendation -->
+<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-4xl" data-icon="leaf">gleaf</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Crop Recommendation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">AI-driven analysis of soil and climate to suggest the most profitable crops for your land.</p>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4 rounded-full"></div>
+</div>
+<p class="text-xs mt-2 text-on-surface-variant/60 font-label-sm">Soil Health Index: 82%</p>
+</div>
+<!-- Disease Detection -->
+<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="w-14 h-14 bg-secondary-container/20 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-4xl" data-icon="scan">scan</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-secondary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Disease Detection</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Upload or capture leaf images to instantly identify pests and diseases with 99% accuracy.</p>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container flex items-center justify-center text-[10px] font-bold">12+</div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined !text-sm" data-icon="bug_report">bug_report</span>
+</div>
+</div>
+</div>
+<!-- Weather Advisory -->
+<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 overflow-hidden relative">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div class="w-14 h-14 bg-surface-container-highest rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-4xl" data-icon="cloud">cloud</span>
+</div>
+<div class="text-right">
+<p class="text-2xl font-bold">28°C</p>
+<p class="text-xs text-on-surface-variant/60">Cloudy</p>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Weather Advisory</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Precision micro-weather forecasts with hyper-local alerts for frost, rain, and heatwaves.</p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">Rain expected @ 4PM</span>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined !text-9xl" data-icon="sunny_snowing">sunny_snowing</span>
+</div>
+</div>
+<!-- Voice & SMS -->
+<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="w-14 h-14 bg-tertiary-container/20 rounded-2xl flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-white transition-colors duration-300">
+<span class="material-symbols-outlined !text-4xl" data-icon="message">message</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-tertiary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Voice &amp; SMS</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Interact with our AI advisor via voice notes or SMS in your local language—no internet required.</p>
+<div class="flex items-center gap-3">
+<div class="flex gap-1">
+<div class="w-1 h-4 bg-tertiary/40 rounded-full animate-pulse"></div>
+<div class="w-1 h-6 bg-tertiary/60 rounded-full animate-pulse [animation-delay:0.2s]"></div>
+<div class="w-1 h-3 bg-tertiary/40 rounded-full animate-pulse [animation-delay:0.4s]"></div>
+<div class="w-1 h-5 bg-tertiary/80 rounded-full animate-pulse [animation-delay:0.1s]"></div>
+</div>
+<span class="text-xs text-on-surface-variant font-label-sm">Listening for input...</span>
+</div>
+</div>
+</div>
+<!-- Secondary Insights / Recent Activity -->
+<section class="mb-gutter-md">
+<h4 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Field Insights
+            </h4>
+<div class="glass-card rounded-3xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container/50 border-b border-outline-variant/30">
+<th class="px-6 py-4 font-label-md text-label-md">Field Location</th>
+<th class="px-6 py-4 font-label-md text-label-md">Current Crop</th>
+<th class="px-6 py-4 font-label-md text-label-md">Health Status</th>
+<th class="px-6 py-4 font-label-md text-label-md">Next Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="px-6 py-4 font-body-md">North Ridge Sector A</td>
+<td class="px-6 py-4 font-body-md">Golden Wheat</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">Excellent</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary font-label-sm hover:underline">Apply Fertilizer</button>
+</td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="px-6 py-4 font-body-md">South Valley Plot 12</td>
+<td class="px-6 py-4 font-body-md">Organic Corn</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold">Monitoring</span>
+</td>
+<td class="px-6 py-4">
+<button class="text-primary font-label-sm hover:underline">Check Irrigation</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md text-primary dark:text-primary-fixed-dim fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant/30 shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] flex justify-around items-center w-full h-20 pb-safe px-2">
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-xl px-3 py-1 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="potted_plant">potted_plant</span>
+<span class="font-label-sm text-label-sm">Crops</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-sm text-label-sm">Detect</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="wb_sunny">wb_sunny</span>
+<span class="font-label-sm text-label-sm">Weather</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+</nav>
+<!-- FAB (Contextual) -->
+<button class="fixed bottom-24 right-6 md:bottom-10 md:right-10 w-16 h-16 bg-primary text-white rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all z-40 flex items-center justify-center group">
+<span class="material-symbols-outlined !text-3xl" data-icon="add_a_photo">add_a_photo</span>
+<span class="absolute right-full mr-4 bg-on-surface text-surface text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">Scan Plant</span>
+</button>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if(icon) {
+                    icon.style.fontVariationSettings = "'FILL' 1";
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if(icon) {
+                    icon.style.fontVariationSettings = "'FILL' 0";
+                }
+            });
+        });
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const navItems = {
+            "dashboard": "/index.html",
+            "potted_plant": "/crop.html",
+            "biotech": "/disease.html",
+            "wb_sunny": "/weather.html",
+            "forum": "/voice_sms.html"
+        };
+        
+        document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
+            const iconName = span.innerText.trim();
+            if (navItems[iconName]) {
+                const parent = span.parentElement;
+                parent.style.cursor = "pointer";
+                parent.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    window.location.href = navItems[iconName];
+                });
+            }
+        });
+    });
+</script>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    
+
+    // Profile click to logout
+    const profileImgs = document.querySelectorAll('.w-10.h-10.rounded-full');
+    profileImgs.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.title = 'Logout';
+        img.addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("kisanvani_token");
+                localStorage.removeItem("kisanvani_lang");
+                window.location.href = "/login.html";
+            }
+        });
+    });
+
+    
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const headerTitle = document.querySelector('h1.text-primary, h1.text-headline-md');
+    if (headerTitle) {
+        headerTitle.style.cursor = 'pointer';
+        headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
+    }
+    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
+    if (menuBtn && menuBtn.innerText.includes('menu')) {
+        menuBtn.parentElement.addEventListener('click', () => {
+            // For mobile, just go to dashboard if menu clicked
+            window.location.href = '/index.html';
+        });
+    }
+});
+</script>
+
+
+
+
+</body>
+
+</html>
