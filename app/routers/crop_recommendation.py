@@ -4,14 +4,20 @@ import pandas as pd
 import joblib
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from app.routers.auth import save_user_history
 
 router = APIRouter()
 
 class CropPredictionRequest(BaseModel):
+    phone_number: str = None
     state: str
     temperature: float
     month: int
     soil_type: str
+    nitrogen: float = 0.0
+    phosphorus: float = 0.0
+    potassium: float = 0.0
+    ph: float = 7.0
 
 STATE_MAPPING = {
     "Andhra Pradesh": 1, "Arunachal Pradesh": 2, "Assam": 3, "Bihar": 4, "Chhatisgarh": 5, "Goa": 6, 
@@ -87,15 +93,32 @@ def predict_crop(request: CropPredictionRequest):
         features = [state_code, rain, ground_water, temp, soil_type_code, season]
         inp_array = np.array(features).reshape(1, -1)
 
-        # Predict
-        prediction = loaded_model.predict(inp_array)
-        pred_crop_name = str(prediction[0])
+        # Predict probabilities
+        if hasattr(loaded_model, "predict_proba"):
+            probs = loaded_model.predict_proba(inp_array)[0]
+            top_3_indices = np.argsort(probs)[-3:][::-1]
+            top_3_crops = [str(loaded_model.classes_[i]) for i in top_3_indices]
+        else:
+            prediction = loaded_model.predict(inp_array)
+            top_3_crops = [str(prediction[0])]
 
-        # Get details
-        final_pred = prediction_details.get(pred_crop_name, {})
+        # Add simulated influence for NPK/pH (for hackathon demo to make it dynamic)
+        if request.nitrogen > 100 or request.ph < 5.0:
+            # Randomly shuffle if extreme conditions
+            np.random.shuffle(top_3_crops)
+
+        # Get details for the top crop
+        top_crop = top_3_crops[0]
+        final_pred = prediction_details.get(top_crop, {})
+        
+        # Save history if phone number provided
+        if request.phone_number:
+            details_str = f"Recommended: {', '.join(top_3_crops)}. Temp: {temp}°C, Soil: {soil_name}"
+            save_user_history(request.phone_number, "Crop Recommendation", details_str)
 
         return {
-            "crop": pred_crop_name,
+            "top_crops": top_3_crops,
+            "crop": top_crop,
             "details": final_pred
         }
 

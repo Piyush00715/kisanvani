@@ -21,8 +21,30 @@ def init_db():
             preferred_language TEXT NOT NULL
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            phone_number TEXT NOT NULL,
+            action_type TEXT NOT NULL,
+            details TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     conn.commit()
     conn.close()
+
+def save_user_history(phone_number: str, action_type: str, details: str):
+    if not phone_number:
+        return
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO history (phone_number, action_type, details) VALUES (?, ?, ?)", 
+                       (phone_number, action_type, details))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print("Failed to save history:", str(e))
 
 init_db()
 
@@ -152,3 +174,27 @@ def register_user(request: RegisterRequest):
         "token": f"token_{phone}",
         "preferred_language": lang
     }
+
+@router.get("/history/{phone_number}")
+def get_user_history(phone_number: str):
+    phone = phone_number.strip()
+    if len(phone) == 10 and phone.isdigit():
+        phone = f"+91{phone}"
+    elif not phone.startswith("+"):
+        phone = f"+{phone}"
+
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT action_type, details, timestamp FROM history WHERE phone_number = ? ORDER BY timestamp DESC LIMIT 20", (phone,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    history_list = []
+    for r in rows:
+        history_list.append({
+            "action_type": r[0],
+            "details": r[1],
+            "timestamp": r[2]
+        })
+
+    return {"status": "success", "history": history_list}

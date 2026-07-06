@@ -294,46 +294,68 @@
 <!-- Secondary Insights / Recent Activity -->
 <section class="mb-gutter-md">
 <h4 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-                Field Insights
+<span class="material-symbols-outlined" data-icon="history">history</span>
+                Recent Activity History
             </h4>
 <div class="glass-card rounded-3xl overflow-hidden shadow-sm">
 <div class="overflow-x-auto">
 <table class="w-full text-left border-collapse">
 <thead>
 <tr class="bg-surface-container/50 border-b border-outline-variant/30">
-<th class="px-6 py-4 font-label-md text-label-md">Field Location</th>
-<th class="px-6 py-4 font-label-md text-label-md">Current Crop</th>
-<th class="px-6 py-4 font-label-md text-label-md">Health Status</th>
-<th class="px-6 py-4 font-label-md text-label-md">Next Action</th>
+<th class="px-6 py-4 font-label-md text-label-md">Date & Time</th>
+<th class="px-6 py-4 font-label-md text-label-md">Action Type</th>
+<th class="px-6 py-4 font-label-md text-label-md">Details</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-outline-variant/10">
+<tbody id="history-table-body" class="divide-y divide-outline-variant/10">
+<!-- Dynamic content goes here -->
 <tr class="hover:bg-primary-container/5 transition-colors group">
-<td class="px-6 py-4 font-body-md">North Ridge Sector A</td>
-<td class="px-6 py-4 font-body-md">Golden Wheat</td>
-<td class="px-6 py-4">
-<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">Excellent</span>
-</td>
-<td class="px-6 py-4">
-<button class="text-primary font-label-sm hover:underline">Apply Fertilizer</button>
-</td>
-</tr>
-<tr class="hover:bg-primary-container/5 transition-colors group">
-<td class="px-6 py-4 font-body-md">South Valley Plot 12</td>
-<td class="px-6 py-4 font-body-md">Organic Corn</td>
-<td class="px-6 py-4">
-<span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-bold">Monitoring</span>
-</td>
-<td class="px-6 py-4">
-<button class="text-primary font-label-sm hover:underline">Check Irrigation</button>
-</td>
+<td class="px-6 py-4 font-body-md" colspan="3">Loading history...</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("kisanvani_token");
+    if (!token) return;
+    
+    const phone = encodeURIComponent(token.replace("token_", ""));
+    try {
+        const response = await fetch(`/api/auth/history/${phone}`);
+        if (response.ok) {
+            const data = await response.json();
+            const tbody = document.getElementById("history-table-body");
+            tbody.innerHTML = "";
+            
+            if (data.history && data.history.length > 0) {
+                data.history.forEach(item => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-primary-container/5 transition-colors group";
+                    
+                    const dateObj = new Date(item.timestamp + "Z"); // Add Z to specify UTC if sqlite is in UTC
+                    
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-body-md whitespace-nowrap text-sm text-on-surface-variant">${dateObj.toLocaleString()}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-bold">${item.action_type}</span>
+                        </td>
+                        <td class="px-6 py-4 font-body-md text-sm">${item.details}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                tbody.innerHTML = `<tr><td class="px-6 py-4 font-body-md text-center" colspan="3">No recent activity found.</td></tr>`;
+            }
+        }
+    } catch (e) {
+        console.error("Failed to load history", e);
+    }
+});
+</script>
 </main>
 <!-- Bottom Navigation Bar (Mobile) -->
 <nav class="md:hidden bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md text-primary dark:text-primary-fixed-dim fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant/30 shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] flex justify-around items-center w-full h-20 pb-safe px-2">

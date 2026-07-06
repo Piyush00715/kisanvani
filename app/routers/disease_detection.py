@@ -35,8 +35,14 @@ if os.path.exists(MODEL_PATH):
 else:
     print(f"Warning: Model file not found at {MODEL_PATH}. Disease detection will not work until it's provided.")
 
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
+from app.routers.auth import save_user_history
+
 @router.post("/predict")
-async def predict_disease(image: UploadFile = File(...)):
+async def predict_disease(
+    image: UploadFile = File(...),
+    phone_number: str = Form(None)
+):
     if not model:
         raise HTTPException(
             status_code=503, 
@@ -79,6 +85,10 @@ async def predict_disease(image: UploadFile = File(...)):
         supplement_image_url = str(supplement_info['supplement image'][index])
         supplement_buy_link = str(supplement_info['buy link'][index])
         
+        if phone_number:
+            details_str = f"Disease: {title}. Supplement: {supplement_name}"
+            save_user_history(phone_number, "Disease Detection", details_str)
+
         return {
             "disease": title,
             "description": description,

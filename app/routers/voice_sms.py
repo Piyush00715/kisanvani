@@ -39,17 +39,21 @@ def send_sms(request: SMSRequest):
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Failed to send SMS: {str(e)}")
 
+from app.voice_sms.sarvam_service import translate_text as sarvam_translate
+
 @router.post("/translate")
 def translate_text(request: TranslationRequest):
-    if not BHASHINI_API_KEY:
-        raise HTTPException(status_code=503, detail="Bhashini API key not configured.")
-        
-    # Bhashini API integration would go here.
-    # The actual endpoint structure depends on the Bhashini API pipeline being used.
-    # This is a stub for the integration.
-    
-    return {
-        "status": "success",
-        "original_text": request.text,
-        "translated_text": f"[Translated to {request.target_language} using Bhashini: {request.text}]"
-    }
+    # Temporary fallback to Sarvam AI while Bhashini is pending
+    try:
+        translated = sarvam_translate(
+            text=request.text, 
+            source_lang=request.source_language, 
+            target_lang=request.target_language
+        )
+        return {
+            "status": "success",
+            "original_text": request.text,
+            "translated_text": translated
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")

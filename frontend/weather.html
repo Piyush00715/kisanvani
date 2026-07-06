@@ -138,7 +138,7 @@
 <div class="flex items-center gap-3">
 <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">location_on</span>
-<span class="text-label-md font-label-md text-on-surface">Punjab, India</span>
+<span id="topLocationDisplay" class="text-label-md font-label-md text-on-surface">Punjab, India</span>
 </div>
 <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary/20">
 <img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a modern Indian farmer wearing a clean, light-colored shirt, smiling warmly at the camera. The background is a soft-focus lush green agricultural field under bright, natural daylight. The image has a high-end, crisp corporate aesthetic with natural skin tones and vibrant yet realistic colors that match a premium SaaS interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFM9N8kuExfWC8c8i2NaLC9bp82dtDTAGNpXgAyW7ftxolSTqTDazoxchslTArkUSvIRx8e5DocuKTlxsvOtQ1RsUZTd7aPCrstPxEFKFqjtNwunrntRyu0LAzzvkSZUrwW9qCOwcAsYRiyLukCRL3wENDhMvo6QMxARju0_MkAOo6DA7NupKTUNGpcMHMc1Ti0f6TQyzXrEk33c0uAhDIzNPhvq8WszeK16ieL4gBof3rlV02MzZU"/>
@@ -187,14 +187,22 @@
 </aside>
 <!-- Main Content Canvas -->
 <main class="pt-20 px-4 md:px-margin-desktop pb-12 max-w-container-max mx-auto">
-<!-- Search Section -->
-<section class="mb-8">
+<!-- Search & Controls Section -->
+<section class="mb-8 space-y-4">
 <div class="relative max-w-2xl mx-auto md:mx-0">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-<input class="w-full h-14 pl-12 pr-4 rounded-2xl bg-surface-container-lowest border-2 border-transparent focus:border-primary/30 focus:ring-0 shadow-sm text-body-md font-body-md text-on-surface placeholder:text-on-surface-variant/50 transition-all" placeholder="Search for a city or farm location..." type="text"/>
-<button class="absolute right-3 top-1/2 -translate-y-1/2 bg-primary text-on-primary px-4 py-1.5 rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors">
+<input class="w-full h-14 pl-12 pr-32 rounded-2xl bg-surface-container-lowest border-2 border-transparent focus:border-primary/30 focus:ring-0 shadow-sm text-body-md font-body-md text-on-surface placeholder:text-on-surface-variant/50 transition-all" placeholder="Search for a city or farm location..." type="text"/>
+<button id="locateBtnReal" class="absolute right-3 top-1/2 -translate-y-1/2 bg-primary text-on-primary px-4 py-1.5 rounded-xl font-label-md text-label-md hover:bg-primary-container transition-colors z-10 cursor-pointer">
                     Locate
                 </button>
+</div>
+
+<div class="max-w-2xl mx-auto md:mx-0 bg-primary/10 rounded-2xl px-6 py-4 shadow-sm flex items-center justify-between">
+    <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary">satellite_alt</span>
+        <span class="text-label-md font-label-md text-primary font-bold">Satellite Auto-Sync Active</span>
+    </div>
+    <span class="text-xs text-primary/70">Powered by Open-Meteo & Earth Engine</span>
 </div>
 </section>
 <!-- Weather Main Advisory -->
@@ -299,11 +307,11 @@
 <span class="material-symbols-outlined">lightbulb</span>
 <h3 class="text-label-md font-label-md uppercase tracking-wider">Agri-Insight</h3>
 </div>
-<h4 class="font-headline-md text-headline-md mb-3">Spray Warning</h4>
-<p class="text-body-md font-body-md text-on-primary/90 mb-6">
+<h4 class="font-headline-md text-headline-md mb-3" id="agriInsightTitle">Spray Warning</h4>
+<p class="text-body-md font-body-md text-on-primary/90 mb-6" id="agriInsightDesc">
                             Wind speeds are expected to increase to 6m/s by noon. Complete pesticide spraying before 10:00 AM to avoid drift.
                         </p>
-<button class="w-full py-3 bg-white text-primary rounded-2xl font-label-md text-label-md font-bold hover:bg-surface-container transition-colors">
+<button class="w-full py-3 bg-white text-primary rounded-2xl font-label-md text-label-md font-bold hover:bg-surface-container transition-colors" onclick="document.getElementById('scheduleModal').classList.remove('hidden')">
                             View Detailed Schedule
                         </button>
 </div>
@@ -318,10 +326,10 @@
 <div>
 <div class="flex justify-between text-label-sm font-label-sm mb-2">
 <span class="text-on-surface-variant">Moisture (Root Zone)</span>
-<span class="text-on-surface font-bold">62%</span>
+<span class="text-on-surface font-bold" id="uiMoistureText">62%</span>
 </div>
 <div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-primary" style="width: 62%;"></div>
+<div class="h-full bg-primary transition-all duration-500" id="uiMoistureBar" style="width: 62%;"></div>
 </div>
 </div>
 <div>
@@ -362,6 +370,65 @@
 </div>
 </div>
 </section>
+
+<!-- Detailed Schedule Modal (Dummy) -->
+<div id="scheduleModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+    <div class="bg-surface rounded-3xl p-6 w-full max-w-md shadow-2xl relative animate-in zoom-in-95 duration-200">
+        <!-- Close Button -->
+        <button onclick="document.getElementById('scheduleModal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-surface-container hover:bg-surface-container-high transition-colors text-on-surface-variant">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+        
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary">calendar_clock</span>
+            </div>
+            <div>
+                <h3 class="font-headline-md text-headline-md text-on-surface">Action Schedule</h3>
+                <p class="font-body-md text-sm text-on-surface-variant">Next 48 Hours</p>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Timeline Item 1 -->
+            <div class="flex gap-4">
+                <div class="flex flex-col items-center">
+                    <div class="w-3 h-3 rounded-full bg-primary mt-1"></div>
+                    <div class="w-0.5 h-12 bg-primary/20 my-1"></div>
+                </div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-surface">Today, 06:00 AM - 09:00 AM</p>
+                    <p class="font-body-md text-sm text-on-surface-variant">Optimal Spraying Window (Low Wind)</p>
+                </div>
+            </div>
+            <!-- Timeline Item 2 -->
+            <div class="flex gap-4">
+                <div class="flex flex-col items-center">
+                    <div class="w-3 h-3 rounded-full bg-secondary mt-1"></div>
+                    <div class="w-0.5 h-12 bg-secondary/20 my-1"></div>
+                </div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-surface">Today, 05:00 PM - 07:00 PM</p>
+                    <p class="font-body-md text-sm text-on-surface-variant">Irrigation Recommended (Cooler Temp)</p>
+                </div>
+            </div>
+            <!-- Timeline Item 3 -->
+            <div class="flex gap-4">
+                <div class="flex flex-col items-center">
+                    <div class="w-3 h-3 rounded-full bg-outline mt-1"></div>
+                </div>
+                <div>
+                    <p class="font-label-md text-label-md text-on-surface">Tomorrow, 12:00 PM</p>
+                    <p class="font-body-md text-sm text-on-surface-variant">Avoid fieldwork (High UV & Heat Peak)</p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="document.getElementById('scheduleModal').classList.add('hidden')" class="mt-8 w-full bg-primary text-on-primary py-3 rounded-xl font-label-md font-bold hover:bg-primary/90 transition-all">
+            Got it
+        </button>
+    </div>
+</div>
 </main>
 <!-- BottomNavBar (Mobile) -->
 <nav class="md:hidden fixed bottom-0 w-full bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-t border-outline-variant/30 h-20 pb-safe px-2 flex justify-around items-center z-50">
@@ -400,7 +467,7 @@
 
         // Weather API Logic
         const cityInput = document.querySelector('input[type="text"]');
-        const locateBtn = document.querySelector('button.bg-primary.text-on-primary.px-4');
+        const locateBtn = document.getElementById('locateBtnReal');
 
         locateBtn.addEventListener('click', async () => {
             const city = cityInput.value.trim();
@@ -409,12 +476,19 @@
                 return;
             }
 
+            const token = localStorage.getItem("kisanvani_token");
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+            const phone_number = token.replace("token_", "");
+
             const originalText = locateBtn.innerText;
             locateBtn.innerText = "Loading...";
             locateBtn.disabled = true;
 
             try {
-                const response = await fetch(`/api/weather/?city=${encodeURIComponent(city)}`);
+                const response = await fetch(`/api/weather/?city=${encodeURIComponent(city)}&phone_number=${encodeURIComponent(phone_number)}`);
                 if (!response.ok) {
                     const err = await response.json();
                     throw new Error(err.detail || "Failed to fetch weather");
@@ -424,6 +498,9 @@
                 // Update UI elements
                 const cityEl = document.querySelector('h2.font-headline-lg');
                 if (cityEl) cityEl.innerText = data.city;
+                
+                const topLocationDisplay = document.getElementById('topLocationDisplay');
+                if (topLocationDisplay) topLocationDisplay.innerText = data.city;
 
                 const tempSpan = document.querySelector('.font-headline-xl.text-\\[56px\\]');
                 if (tempSpan) {
@@ -435,12 +512,43 @@
                     conditionEl.innerText = data.weather_condition.charAt(0).toUpperCase() + data.weather_condition.slice(1);
                 }
 
-                // Sub-metrics
+                // Update satellite soil moisture UI
+                if (data.satellite_soil_moisture !== undefined) {
+                    const smText = document.getElementById('uiMoistureText');
+                    if (smText) smText.innerText = data.satellite_soil_moisture + '%';
+                    
+                    const smBar = document.getElementById('uiMoistureBar');
+                    if (smBar) smBar.style.width = data.satellite_soil_moisture + '%';
+                }
+
+                // Update Advisoryics
                 const subMetrics = document.querySelectorAll('.grid-cols-2.md\\:grid-cols-4 .text-headline-md');
                 if (subMetrics.length >= 4) {
                     subMetrics[0].innerHTML = `${data.humidity_percent}<span class="text-body-md ml-0.5">%</span>`;
                     subMetrics[1].innerHTML = `${data.wind_speed_m_s}<span class="text-body-md ml-0.5">m/s</span>`;
                     // Pressure and visibility are not returned by the backend currently, leave them mocked or hide them
+                }
+
+                // Update Advisory
+                if (data.advisory) {
+                    const titleParts = data.advisory.split(':');
+                    let title = "Advisory";
+                    let desc = data.advisory;
+                    
+                    if (titleParts.length > 1) {
+                        // Extracting the strong tag if any
+                        const match = data.advisory.match(/<strong>(.*?)<\/strong>:(.*)/);
+                        if (match) {
+                            title = match[1].trim();
+                            desc = match[2].trim();
+                        } else {
+                            title = titleParts[0].trim();
+                            desc = titleParts.slice(1).join(':').trim();
+                        }
+                    }
+                    
+                    document.getElementById('agriInsightTitle').innerText = title;
+                    document.getElementById('agriInsightDesc').innerHTML = desc; // using innerHTML to render any remaining tags
                 }
 
             } catch (err) {

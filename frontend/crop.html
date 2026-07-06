@@ -212,6 +212,25 @@
 </label>
 </div>
 </div>
+<!-- NPK & pH (Advanced) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="space-y-2">
+        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Nitrogen (N)</label>
+        <input id="inputN" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 50" type="number" value="50"/>
+    </div>
+    <div class="space-y-2">
+        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Phosphorus (P)</label>
+        <input id="inputP" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 50" type="number" value="50"/>
+    </div>
+    <div class="space-y-2">
+        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Potassium (K)</label>
+        <input id="inputK" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 50" type="number" value="50"/>
+    </div>
+    <div class="space-y-2">
+        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">pH Level</label>
+        <input id="inputPH" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 6.5" type="number" step="0.1" value="6.5"/>
+    </div>
+</div>
 <!-- CTA Button -->
 <button class="w-full bg-primary hover:bg-primary/90 text-on-primary font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98] flex justify-center items-center gap-2" onclick="predictCrop()" type="button">
 <span class="material-symbols-outlined">analytics</span>
@@ -233,16 +252,12 @@
 </div>
 </div>
 <!-- Hidden Success State Template (for JS interaction demo) -->
-<div class="hidden glass-card rounded-2xl border border-primary/20 p-8 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500" id="successState">
-<div class="flex items-start justify-between mb-8">
-<div>
-<span class="inline-block bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-4">Recommended Choice</span>
-<h3 class="font-headline-xl text-headline-xl text-primary">Sugarcane</h3>
+<div class="hidden glass-card rounded-2xl border border-primary/20 p-6 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500" id="successState">
+<span class="inline-block bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-4">Top 3 Recommended Crops</span>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6" id="topCropsGrid">
+<!-- Populated via JS -->
 </div>
-<div class="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-4xl">eco</span>
-</div>
-</div>
+
 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
 <div class="bg-surface-container-low p-4 rounded-xl">
 <p class="font-label-sm text-label-sm text-outline uppercase">Confidence</p>
@@ -250,16 +265,16 @@
 </div>
 <div class="bg-surface-container-low p-4 rounded-xl">
 <p class="font-label-sm text-label-sm text-outline uppercase">Est. Yield</p>
-<p class="font-headline-md text-headline-md text-on-surface">82 T/ha</p>
+<p class="font-headline-md text-headline-md text-on-surface" id="yieldData">82 T/ha</p>
 </div>
 <div class="bg-surface-container-low p-4 rounded-xl">
 <p class="font-label-sm text-label-sm text-outline uppercase">Profitability</p>
-<p class="font-headline-md text-headline-md text-primary">High</p>
+<p class="font-headline-md text-headline-md text-primary" id="profitData">High</p>
 </div>
 </div>
 <div class="space-y-4">
-<h4 class="font-label-md text-label-md text-on-surface font-bold">Why this crop?</h4>
-<p class="font-body-md text-body-md text-on-surface-variant">Based on the Clayey Soil type in Maharashtra during June, Sugarcane offers the highest climate resilience and market price potential. Current soil moisture levels are optimal for initial sowing phases.</p>
+<h4 class="font-label-md text-label-md text-on-surface font-bold">Why these crops?</h4>
+<p class="font-body-md text-body-md text-on-surface-variant" id="whyText">Based on the Soil type in your State, these crops offer the highest climate resilience and market price potential. Current soil moisture levels are optimal for initial sowing phases.</p>
 </div>
 <button class="w-full mt-8 border border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary-container/10 transition-colors">
                         View Detailed Cultivation Guide
@@ -307,6 +322,10 @@
             const monthText = selects[1].value;
             const temp = document.querySelector('input[type="number"]').value;
             const soilRadio = document.querySelector('input[name="soil"]:checked');
+            const nitrogen = document.getElementById('inputN').value || 0;
+            const phosphorus = document.getElementById('inputP').value || 0;
+            const potassium = document.getElementById('inputK').value || 0;
+            const ph = document.getElementById('inputPH').value || 7.0;
 
             if (!state || !monthText || !temp || !soilRadio) {
                 alert("Please fill in all fields (State, Temperature, Month, and Soil Type).");
@@ -315,6 +334,9 @@
 
             const month = monthMap[monthText] || 1;
             const soil_type = soilRadio.nextElementSibling.innerText.trim();
+
+            const token = localStorage.getItem("kisanvani_token") || "";
+            const phone_number = token.replace("token_", "");
 
             const originalContent = btn.innerHTML;
             btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Analyzing Data...`;
@@ -325,10 +347,15 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        phone_number: phone_number,
                         state: state,
                         temperature: parseFloat(temp),
                         month: month,
-                        soil_type: soil_type
+                        soil_type: soil_type,
+                        nitrogen: parseFloat(nitrogen),
+                        phosphorus: parseFloat(phosphorus),
+                        potassium: parseFloat(potassium),
+                        ph: parseFloat(ph)
                     })
                 });
 
@@ -340,19 +367,29 @@
                 const data = await response.json();
                 
                 // Update success UI with data
-                document.querySelector('#successState h3').innerText = data.crop;
-                const details = data.details || {};
-                const stats = document.querySelectorAll('#successState .font-headline-md.text-on-surface');
-                if (stats.length >= 2) {
-                    stats[0].innerText = "94%"; // Mock confidence
-                    stats[1].innerText = details.Est_Yield || "N/A";
-                }
-                const profitability = document.querySelector('#successState .font-headline-md.text-primary');
-                if (profitability) profitability.innerText = details.Profitability || "High";
+                const topCropsGrid = document.getElementById('topCropsGrid');
+                topCropsGrid.innerHTML = '';
                 
-                const whyText = document.querySelector('#successState p.text-on-surface-variant');
+                const topCrops = data.top_crops || [data.crop];
+                topCrops.forEach((c, i) => {
+                    topCropsGrid.innerHTML += `
+                    <div class="bg-surface rounded-xl p-4 border border-outline-variant/30 flex flex-col items-center justify-center text-center shadow-sm relative">
+                        ${i===0 ? '<span class="absolute -top-3 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Best Match</span>' : ''}
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                            <span class="material-symbols-outlined text-primary">eco</span>
+                        </div>
+                        <h4 class="font-headline-md text-lg text-primary">${c}</h4>
+                    </div>
+                    `;
+                });
+
+                const details = data.details || {};
+                document.getElementById('yieldData').innerText = details.Est_Yield || "N/A";
+                document.getElementById('profitData').innerText = details.Profitability || "High";
+                
+                const whyText = document.getElementById('whyText');
                 if (whyText) {
-                    whyText.innerText = details.Why || `Based on ${soil_type} Soil in ${state} during ${monthText}, ${data.crop} is highly recommended.`;
+                    whyText.innerText = details.Why || `Based on ${soil_type} Soil in ${state} with pH ${ph}, ${topCrops.join(", ")} are highly recommended.`;
                 }
 
                 container.classList.add('hidden');
