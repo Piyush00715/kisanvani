@@ -114,9 +114,9 @@ def send_otp(request: SendOTPRequest):
         return {"status": "success", "message": "OTP sent successfully."}
     except requests.exceptions.RequestException as e:
         # Catch errors (e.g. unverified trial number or missing funds)
-        # We allow it to pass so they can use the master OTP '123456'
+        # We allow it to pass so they can use the master OTP '1234'
         print(f"Twilio SMS Failed: {e}")
-        return {"status": "success", "message": "OTP generated locally (Twilio SMS failed, please use master OTP 123456)."}
+        return {"status": "success", "message": "OTP generated locally (Twilio SMS failed, please use master OTP 1234)."}
 
 @router.post("/verify-otp")
 def verify_otp(request: VerifyOTPRequest):
@@ -127,8 +127,8 @@ def verify_otp(request: VerifyOTPRequest):
         phone = f"+{phone}"
 
     if phone not in otp_store or otp_store[phone] != request.otp:
-        # For testing, let's allow a master OTP "123456" in case SMS fails
-        if request.otp != "123456":
+        # For testing, let's allow a master OTP "1234" in case SMS fails
+        if request.otp != "1234":
             raise HTTPException(status_code=400, detail="Invalid or expired OTP.")
     
     # OTP verified, remove from store
