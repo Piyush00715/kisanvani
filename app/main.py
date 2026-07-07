@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers import crop_recommendation
 from app.routers import disease_detection
 from app.routers import weather_advisory
-from app.routers import voice_sms
+from app.routers import news
 from app.routers import auth
 from app.routers import cron_jobs
 from app.routers import rsk
@@ -48,7 +48,7 @@ def health_check():
 app.include_router(crop_recommendation.router, prefix="/api/crop", tags=["Crop Recommendation"])
 app.include_router(disease_detection.router, prefix="/api/disease", tags=["Disease Detection"])
 app.include_router(weather_advisory.router, prefix="/api/weather", tags=["Weather Advisory"])
-app.include_router(voice_sms.router, prefix="/api/communications", tags=["Voice & SMS"])
+app.include_router(news.router, prefix="/api/news", tags=["Agri-News"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 app.include_router(cron_jobs.router, prefix="/api/cron", tags=["Cron Jobs"])
 app.include_router(rsk.router, prefix="/api/rsk", tags=["RSK Expert Dashboard"])

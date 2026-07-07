@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri-News & Schemes - KisanVani</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#006b2c",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#00873a",
+                        "on-primary-container": "#f7fff2",
+                        "secondary": "#944a23",
+                        "secondary-container": "#fd9e70",
+                        "on-secondary-container": "#76340e",
+                        "surface": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "surface-variant": "#d3e4fe",
+                        "on-surface-variant": "#3e4a3d",
+                        "outline-variant": "#bdcaba",
+                        "background": "#f8f9ff",
+                    },
+                    fontFamily: {
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+    <script>
+        if (!localStorage.getItem('kisanvani_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface pb-24 md:pb-0">
+
+<!-- Mobile Sliding Drawer Overlay -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+
+<!-- Mobile Sliding Drawer -->
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/news.html" class="flex items-center gap-4 px-4 py-3 rounded-xl bg-primary-container text-on-primary-container hover:opacity-90 transition-colors">
+            <span class="material-symbols-outlined">newspaper</span>
+            <span class="font-label-md font-bold">Agri-News & Schemes</span>
+        </a>
+    
+        <div class="mt-6">
+            <button onclick="logoutUser()" class="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-all w-full shadow-md active:scale-95">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-label-md font-bold">Logout</span>
+            </button>
+        </div>
+    </nav>
+</aside>
+
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16">
+    <div class="flex items-center gap-4">
+        <button class="p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full">
+            <span class="material-symbols-outlined text-primary">menu</span>
+        </button>
+        <h1 class="font-headline-md text-headline-md font-bold text-primary cursor-pointer" onclick="window.location.href='/index.html'">KisanVani</h1>
+    </div>
+    <div class="flex items-center">
+        
+    </div>
+</header>
+
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-4 md:px-8 max-w-7xl mx-auto">
+    <header class="mb-8">
+        <h2 class="text-3xl font-bold text-on-surface mb-2">Agri-News & Government Schemes</h2>
+        <p class="text-on-surface-variant font-body-md">Stay updated with the latest farming news, subsidies, and agricultural policies.</p>
+    </header>
+
+    <div id="loading" class="flex justify-center items-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+
+    <!-- News Grid -->
+    <div id="newsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+        <!-- Cards injected by JS -->
+    </div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Drawer Logic
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+
+    // Profile Logout
+    const profileBtn = document.getElementById('profileBtn');
+    if (profileBtn) {
+        profileBtn.addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("kisanvani_token");
+                window.location.href = "/login.html";
+            }
+        });
+    }
+
+    // Fetch News
+    async function fetchNews() {
+        try {
+            const res = await fetch('http://localhost:8000/api/news/latest');
+            const data = await res.json();
+            
+            document.getElementById('loading').classList.add('hidden');
+            const container = document.getElementById('newsContainer');
+            container.classList.remove('hidden');
+            
+            if (data.status === 'success' && data.data) {
+                data.data.forEach(news => {
+                    const card = document.createElement('article');
+                    card.className = "glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer border border-outline-variant/50 hover:border-primary/50";
+                    
+                    card.innerHTML = `
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="${news.thumbnail}" alt="${news.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-md backdrop-blur-sm bg-primary/90">
+                                ${news.category}
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <div class="text-xs text-on-surface-variant/70 font-semibold mb-2 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">schedule</span> ${news.date}
+                            </div>
+                            <h3 class="font-bold text-xl text-on-surface mb-3 leading-tight group-hover:text-primary transition-colors">${news.title}</h3>
+                            <p class="text-on-surface-variant font-body-md text-sm mb-4 line-clamp-3">${news.summary}</p>
+                            <div class="mt-auto">
+                                <button class="text-primary font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all">
+                                    Read Full Story <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        } catch (error) {
+            console.error("Error fetching news:", error);
+            document.getElementById('loading').innerHTML = `<p class="text-error font-bold text-center w-full">Failed to load news. Please try again later.</p>`;
+        }
+    }
+    
+    fetchNews();
+});
+</script>
+
+<script>
+function logoutUser() {
+    localStorage.removeItem("kisanvani_token");
+    window.location.href = "/login.html";
+}
+</script>
+</body>
+</html>

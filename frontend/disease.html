@@ -151,10 +151,17 @@
             <span class="material-symbols-outlined">wb_sunny</span>
             <span class="font-label-md font-bold">Weather Advisory</span>
         </a>
-        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
-            <span class="material-symbols-outlined">forum</span>
-            <span class="font-label-md font-bold">Communication</span>
+        <a href="/news.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">newspaper</span>
+            <span class="font-label-md font-bold">Agri-News & Schemes</span>
         </a>
+    
+        <div class="mt-6">
+            <button onclick="logoutUser()" class="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-all w-full shadow-md active:scale-95">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-label-md font-bold">Logout</span>
+            </button>
+        </div>
     </nav>
 </aside>
 
@@ -166,9 +173,7 @@
 </button>
 <h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
 </div>
-<div class="h-10 w-10 rounded-full bg-surface-container-high border border-outline-variant/30 overflow-hidden shadow-sm">
-<img class="w-full h-full object-cover" data-alt="A professional headshot of a modern farmer in a light-filled office, wearing a clean linen shirt. The lighting is warm and natural, suggesting a successful agribusiness environment. The background shows a hint of digital agricultural charts, maintaining a corporate and tech-savvy mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKLYK8TbXxVmYuqnxOz4-S901osIXhf0RxOz4BZ3crV77wn9aZ2asZadq6ZsmvVibQh72QtnLuw3Ptq87hg3KCEIiUU0cmKsDQWAcZmCk_o8WF7dkqiBU8Ni-UlluXPT3fEmgnw0srpUdbxpDFZjoR1i_r7icmXTFWNxUCoq5lQoI4mL_akPAdhAdmoRXYnshiZLUltTBYhsguUKQPBnrjZML-j5mFQ0rkyaxEgfqAWhsKiMUalvM"/>
-</div>
+
 </header>
 <main class="pt-24 px-4 md:px-8 max-w-7xl mx-auto">
 <!-- Detection Hero Section -->
@@ -188,7 +193,7 @@
 <span class="text-xs text-on-surface-variant mt-1">JPEG, PNG up to 10MB</span>
 </div>
 <div class="hidden absolute inset-0 w-full h-full rounded-lg overflow-hidden" id="previewContainer">
-<img class="w-full h-full object-cover" data-alt="A close-up, high-definition macro photograph of a vibrant green tomato leaf with subtle early blight brown spots. The lighting is crisp and clinical, emphasizing the texture of the plant and the details of the disease. The background is a clean, neutral gray, focusing all attention on the specimen." id="imagePreview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQw5-0l7JtoF7DyVtWN-w5IQlAMriR6EP0HTZT4YxVZ40OcLErx0yDXkU9aPfKBP2PXlHxtPaCO3kQH9qLsMztsILBjhTY-V9ktlYScNpXeo54S5Xrd2ExqsPiKHJ3jc6Nr9HrMWXTBdt6nL0_392RS7tRb_cqv7v4laI1SLEw5FnpfhFhVQk7ZKN6SHfcHaU1Uznk6HPW8GLa931A7oLJmqtPBw-5udJFPoTfiU7KCPFD9YeFxisW"/>
+<img id="previewImage" class="w-full h-full object-cover" src="" alt="Preview">
 <div class="hidden absolute top-0 left-0 w-full scan-line" id="scanningLine"></div>
 </div>
 </div>
@@ -296,7 +301,7 @@
 <span class="font-label-sm text-label-sm">Weather</span>
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-colors duration-150" href="#">
-<span class="material-symbols-outlined">forum</span>
+<span class="material-symbols-outlined">newspaper</span>
 <span class="font-label-sm text-label-sm">Chat</span>
 </a>
 </nav>
@@ -554,7 +559,7 @@
             "potted_plant": "/crop.html",
             "biotech": "/disease.html",
             "wb_sunny": "/weather.html",
-            "forum": "/voice_sms.html"
+            "forum": "/news.html"
         };
         
         document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
@@ -654,6 +659,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
 });
 </script>
-\n</body>
+\n
+<script>
+function logoutUser() {
+    localStorage.removeItem("kisanvani_token");
+    window.location.href = "/login.html";
+}
+</script>
+</body>
 
 </html>

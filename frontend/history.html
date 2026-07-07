@@ -68,10 +68,17 @@
             <span class="material-symbols-outlined">wb_sunny</span>
             <span class="font-label-md font-bold">Weather Advisory</span>
         </a>
-        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
-            <span class="material-symbols-outlined">forum</span>
-            <span class="font-label-md font-bold">Communication</span>
+        <a href="/news.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">newspaper</span>
+            <span class="font-label-md font-bold">Agri-News & Schemes</span>
         </a>
+    
+        <div class="mt-6">
+            <button onclick="logoutUser()" class="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-all w-full shadow-md active:scale-95">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-label-md font-bold">Logout</span>
+            </button>
+        </div>
     </nav>
 </aside>
 
@@ -82,7 +89,7 @@
         <span class="text-xl font-bold text-primary cursor-pointer" onclick="window.location.href='index.html'">KisanVani</span>
     </div>
     <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-surface-container-high border-2 border-primary/20 flex items-center justify-center overflow-hidden cursor-pointer logout-btn" title="Logout">
+        <div class="w-10 h-10 rounded-full bg-surface-container-high border-2 border-primary/20 flex items-center justify-center overflow-hidden cursor-pointer logout-btn" >
             <span class="material-symbols-outlined text-primary">person</span>
         </div>
     </div>
@@ -251,5 +258,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
 });
 </script>
-\n</body>
+\n
+<script>
+function logoutUser() {
+    localStorage.removeItem("kisanvani_token");
+    window.location.href = "/login.html";
+}
+</script>
+</body>
 </html>

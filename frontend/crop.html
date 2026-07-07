@@ -157,10 +157,17 @@
             <span class="material-symbols-outlined">wb_sunny</span>
             <span class="font-label-md font-bold">Weather Advisory</span>
         </a>
-        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
-            <span class="material-symbols-outlined">forum</span>
-            <span class="font-label-md font-bold">Communication</span>
+        <a href="/news.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">newspaper</span>
+            <span class="font-label-md font-bold">Agri-News & Schemes</span>
         </a>
+    
+        <div class="mt-6">
+            <button onclick="logoutUser()" class="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-all w-full shadow-md active:scale-95">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-label-md font-bold">Logout</span>
+            </button>
+        </div>
     </nav>
 </aside>
 
@@ -173,9 +180,7 @@
 <h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
 </div>
 <div class="flex items-center">
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
-<img class="w-full h-full object-cover" data-alt="A professional high-resolution profile portrait of a modern Indian farmer wearing a clean white shirt, smiling warmly against a blurred background of a lush green agricultural field at sunset. The lighting is soft and golden, highlighting a sense of technical expertise and prosperity in a clean, modern agricultural SaaS interface style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmsqAF5ZwTchckG7QtOsB5XRFXmmbPQK_liyBCTPw_Gegon4g88hmd3dgzhbgUo-JlVI4zutEv4EwyM6tBOooSXhy94CBzhpSPY0OaCcRhTphq3v6MvijzeEdCTy6vx8ha0wJZUFl_zsYgmXuLH32gDWxvzyM2JzgUqVG_l1UjIq1-v8btGbbBCXpNyAF-LFdezYAoAYox1tnR0zmzmVxOVac5vY9hDUExolry7ZoBafqer62e3_vT"/>
-</div>
+
 </div>
 </header>
 <!-- Main Content Canvas -->
@@ -225,7 +230,7 @@
 <p class="font-body-md text-body-md text-outline max-w-xs">Complete the form on the left to analyze soil health and weather data for your personalized crop prediction.</p>
 <!-- Decorative Background for empty state -->
 <div class="mt-8 opacity-20 w-full max-w-md h-40 rounded-xl overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-<img class="w-full h-full object-cover" data-alt="A wide-angle landscape photograph of a perfectly organized, lush green commercial vegetable farm with neat rows of diverse crops stretching into the distance. The lighting is crisp early morning daylight, emphasizing professional agricultural management and fertility. The style is bright and clean to match a corporate agritech dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIY-sUVW2YY8jyiNTuKNS6S_5hCo9_mtRgoF6DeTi1ay3Gvodt958qMwUnjfsYJ5xQA2MMr8hI-tmjFUVUPMVMYEaT9d916U9tSgb6kkhs6GyAJbPIbpWd6BjU4RnToPT6wRJz3J8F3vM_N-GFDCSJTbxSJdwyEs81MFwugwi6ZFRQggYm2s2qetjP_Y2dRkbI6Ulu0t7SzWJbP2q_MrZy5vUD9XKtv_WAl-vVORoH76fcAnHnNfTT"/>
+<span class="material-symbols-outlined text-primary !text-3xl">account_circle</span>
 </div>
 </div>
 <!-- Hidden Success State Template (for JS interaction demo) -->
@@ -374,7 +379,7 @@
             "potted_plant": "/crop.html",
             "biotech": "/disease.html",
             "wb_sunny": "/weather.html",
-            "forum": "/voice_sms.html"
+            "forum": "/news.html"
         };
         
         document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
@@ -474,6 +479,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
 });
 </script>
-\n</body>
+\n
+<script>
+function logoutUser() {
+    localStorage.removeItem("kisanvani_token");
+    window.location.href = "/login.html";
+}
+</script>
+</body>
 
 </html>

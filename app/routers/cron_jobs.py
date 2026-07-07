@@ -51,11 +51,17 @@ def trigger_dry_spell_alerts():
                 volumetric_sm = om_data.get("current", {}).get("soil_moisture_0_to_7cm", 0.5)
                 soil_moisture = round(volumetric_sm * 100, 1)
 
-            # Dry Spell Condition
+            # Dry Spell & Rain Alert Conditions
             is_raining = "rain" in weather_desc or "drizzle" in weather_desc or "thunderstorm" in weather_desc
-            if soil_moisture < 40.0 and not is_raining:
-                alert_text = f"KisanVani Alert: Severe dry spell detected in your area. Soil moisture is critically low ({soil_moisture}%). Please irrigate your crops to prevent damage."
+            is_heavy_rain = "heavy" in weather_desc or "thunderstorm" in weather_desc
+            
+            alert_text = ""
+            if is_heavy_rain:
+                alert_text = f"KisanVani Alert: Heavy rain or thunderstorm expected in your area ({w_data.get('name', state)}). Please halt spraying and secure your harvested crops."
+            elif soil_moisture < 40.0 and not is_raining:
+                alert_text = f"KisanVani Alert: Severe dry spell detected. Soil moisture is critically low ({soil_moisture}%). Please irrigate your crops to prevent damage."
                 
+            if alert_text:
                 # Translate if needed
                 if lang != "en":
                     try:

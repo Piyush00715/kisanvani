@@ -158,10 +158,17 @@
             <span class="material-symbols-outlined">wb_sunny</span>
             <span class="font-label-md font-bold">Weather Advisory</span>
         </a>
-        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
-            <span class="material-symbols-outlined">forum</span>
-            <span class="font-label-md font-bold">Communication</span>
+        <a href="/news.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">newspaper</span>
+            <span class="font-label-md font-bold">Agri-News & Schemes</span>
         </a>
+    
+        <div class="mt-6">
+            <button onclick="logoutUser()" class="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-all w-full shadow-md active:scale-95">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-label-md font-bold">Logout</span>
+            </button>
+        </div>
     </nav>
 </aside>
 
@@ -176,9 +183,7 @@
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">location_on</span>
 <span id="topLocationDisplay" class="text-label-md font-label-md text-on-surface">Locating...</span>
 </div>
-<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary/20">
-<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a modern Indian farmer wearing a clean, light-colored shirt, smiling warmly at the camera. The background is a soft-focus lush green agricultural field under bright, natural daylight. The image has a high-end, crisp corporate aesthetic with natural skin tones and vibrant yet realistic colors that match a premium SaaS interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFM9N8kuExfWC8c8i2NaLC9bp82dtDTAGNpXgAyW7ftxolSTqTDazoxchslTArkUSvIRx8e5DocuKTlxsvOtQ1RsUZTd7aPCrstPxEFKFqjtNwunrntRyu0LAzzvkSZUrwW9qCOwcAsYRiyLukCRL3wENDhMvo6QMxARju0_MkAOo6DA7NupKTUNGpcMHMc1Ti0f6TQyzXrEk33c0uAhDIzNPhvq8WszeK16ieL4gBof3rlV02MzZU"/>
-</div>
+
 </div>
 </header>
 <!-- Main Content Canvas -->
@@ -525,7 +530,7 @@
 <span class="font-label-sm text-label-sm">Weather</span>
 </button>
 <button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined">forum</span>
+<span class="material-symbols-outlined">newspaper</span>
 <span class="font-label-sm text-label-sm">Chat</span>
 </button>
 </nav>
@@ -643,7 +648,7 @@
             "potted_plant": "/crop.html",
             "biotech": "/disease.html",
             "wb_sunny": "/weather.html",
-            "forum": "/voice_sms.html"
+            "forum": "/news.html"
         };
         
         document.querySelectorAll("nav span.material-symbols-outlined, aside span.material-symbols-outlined, .md\\:hidden span.material-symbols-outlined").forEach(span => {
@@ -743,6 +748,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
 });
 </script>
-\n</body>
+\n
+<script>
+function logoutUser() {
+    localStorage.removeItem("kisanvani_token");
+    window.location.href = "/login.html";
+}
+</script>
+</body>
 
 </html>
