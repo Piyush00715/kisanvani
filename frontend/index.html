@@ -344,7 +344,7 @@ function openActivityModal(index) {
     // Format details nicely
     let detailsText = item.details;
     if (item.action_type === 'Disease Detection' && detailsText.includes('|')) {
-        detailsText = detailsText.replace(/\|/g, '\\n\\n•');
+        detailsText = detailsText.replace(/\|/g, '\\•');
     }
     
     document.getElementById('activity-modal-content').innerText = detailsText;
@@ -431,7 +431,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 hover:bg-surface-container-high transition-transform duration-150 active:scale-95" href="#">
 <span class="material-symbols-outlined" data-icon="forum">newspaper</span>
-<span class="font-label-sm text-label-sm">Chat</span>
+<span class="font-label-sm text-label-sm">News</span>
 </a>
 </nav>
 <!-- FAB (Contextual) -->
@@ -598,7 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
 });
 </script>
-\n
+
 <script>
 function logoutUser() {
     localStorage.removeItem("kisanvani_token");

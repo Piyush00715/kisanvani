@@ -151,7 +151,7 @@ function openActivityModal(index) {
     
     let detailsText = item.details;
     if (item.action_type === 'Disease Detection' && detailsText.includes('|')) {
-        detailsText = detailsText.replace(/\|/g, '\n\n•');
+        detailsText = detailsText.replace(/\|/g, '•');
     }
     
     document.getElementById('activity-modal-content').innerText = detailsText;
@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
 });
 </script>
-\n
+
 <script>
 function logoutUser() {
     localStorage.removeItem("kisanvani_token");
