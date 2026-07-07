@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch News
     async function fetchNews() {
         try {
-            const res = await fetch('http://localhost:8000/api/news/latest');
+            const res = await fetch('/api/news/latest');
             const data = await res.json();
             
             document.getElementById('loading').classList.add('hidden');
