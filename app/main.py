@@ -13,6 +13,8 @@ from app.routers import disease_detection
 from app.routers import weather_advisory
 from app.routers import voice_sms
 from app.routers import auth
+from app.routers import cron_jobs
+from app.routers import rsk
 
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse
@@ -32,6 +34,11 @@ app.add_middleware(
 def read_root():
     return RedirectResponse(url="/index.html")
 
+@app.get("/rsk")
+def read_rsk():
+    from fastapi.responses import FileResponse
+    return FileResponse("frontend/rsk_dashboard.html")
+
 # Health check at /api/health
 @app.get("/api/health")
 def health_check():
@@ -43,6 +50,8 @@ app.include_router(disease_detection.router, prefix="/api/disease", tags=["Disea
 app.include_router(weather_advisory.router, prefix="/api/weather", tags=["Weather Advisory"])
 app.include_router(voice_sms.router, prefix="/api/communications", tags=["Voice & SMS"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
+app.include_router(cron_jobs.router, prefix="/api/cron", tags=["Cron Jobs"])
+app.include_router(rsk.router, prefix="/api/rsk", tags=["RSK Expert Dashboard"])
 
 # Mount static files (this must be at the end so it doesn't shadow /api/ routes)
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")

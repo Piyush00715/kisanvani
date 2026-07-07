@@ -128,9 +128,45 @@
     </script>
 </head>
 
-<body class="text-on-background min-h-screen pb-24 md:pb-0 md:pl-80">
+<body class="text-on-background min-h-screen pb-24 md:pb-0 ">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors bg-primary-container text-on-primary-container">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
 <!-- TopAppBar -->
-<header class="fixed top-0 right-0 left-0 md:left-80 z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30 h-16 flex justify-between items-center px-4">
+<header class="fixed top-0 right-0 left-0 z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md shadow-sm border-b border-outline-variant/30 h-16 flex justify-between items-center px-4">
 <div class="flex items-center gap-4">
 <button class="material-symbols-outlined text-primary p-2 hover:bg-primary-container/10 rounded-full transition-colors duration-200">menu</button>
 <h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
@@ -138,55 +174,15 @@
 <div class="flex items-center gap-3">
 <div class="hidden md:flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full">
 <span class="material-symbols-outlined text-on-surface-variant text-[20px]">location_on</span>
-<span id="topLocationDisplay" class="text-label-md font-label-md text-on-surface">Punjab, India</span>
+<span id="topLocationDisplay" class="text-label-md font-label-md text-on-surface">Locating...</span>
 </div>
 <div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary/20">
 <img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a modern Indian farmer wearing a clean, light-colored shirt, smiling warmly at the camera. The background is a soft-focus lush green agricultural field under bright, natural daylight. The image has a high-end, crisp corporate aesthetic with natural skin tones and vibrant yet realistic colors that match a premium SaaS interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFM9N8kuExfWC8c8i2NaLC9bp82dtDTAGNpXgAyW7ftxolSTqTDazoxchslTArkUSvIRx8e5DocuKTlxsvOtQ1RsUZTd7aPCrstPxEFKFqjtNwunrntRyu0LAzzvkSZUrwW9qCOwcAsYRiyLukCRL3wENDhMvo6QMxARju0_MkAOo6DA7NupKTUNGpcMHMc1Ti0f6TQyzXrEk33c0uAhDIzNPhvq8WszeK16ieL4gBof3rlV02MzZU"/>
 </div>
 </div>
 </header>
-<!-- NavigationDrawer (Desktop) -->
-<aside class="hidden md:flex fixed left-0 top-0 h-full w-80 bg-surface dark:bg-surface-dim border-r border-outline-variant/20 flex-col py-6 pr-4 shadow-xl z-50">
-<div class="px-6 mb-8 flex items-center gap-3">
-<div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-<span class="material-symbols-outlined text-white text-3xl">agriculture</span>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h2>
-<p class="text-on-surface-variant text-label-sm font-label-sm">Premium Agri-SaaS</p>
-</div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-body-md text-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">potted_plant</span>
-<span class="font-body-md text-body-md">Crop Recommendation</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">biotech</span>
-<span class="font-body-md text-body-md">Disease Detection</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 bg-secondary-container text-on-secondary-container font-bold rounded-r-full active:scale-98 transition-all" href="#">
-<span class="material-symbols-outlined">wb_sunny</span>
-<span class="font-body-md text-body-md">Weather Advisory</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">forum</span>
-<span class="font-body-md text-body-md">Communication</span>
-</a>
-</nav>
-<div class="mt-auto px-6 pt-6 border-t border-outline-variant/10">
-<div class="flex items-center justify-between text-on-surface-variant/60 text-label-sm font-label-sm">
-<span>System Status: Optimal</span>
-<span>v1.0.4</span>
-</div>
-</div>
-</aside>
 <!-- Main Content Canvas -->
-<main class="pt-20 px-4 md:px-margin-desktop pb-12 max-w-container-max mx-auto">
+<main class="pt-20 px-4 md:px-8 pb-12 max-w-7xl mx-auto">
 <!-- Search & Controls Section -->
 <section class="mb-8 space-y-4">
 <div class="relative max-w-2xl mx-auto md:mx-0">
@@ -217,14 +213,14 @@
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
 <div>
 <p class="text-label-md font-label-md text-primary uppercase tracking-widest mb-1">Current Advisory</p>
-<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Ludhiana, Punjab</h2>
+<h2 id="mainLocationDisplay" class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Detecting Location...</h2>
 <p class="text-body-md font-body-md text-on-surface-variant">Optimal conditions for wheat irrigation today.</p>
 </div>
 <div class="flex items-center gap-4 bg-surface-container-low/50 px-6 py-4 rounded-[24px]">
 <span class="material-symbols-outlined text-[64px] text-secondary" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
 <div>
-<span class="block font-headline-xl text-[56px] leading-tight text-on-surface">28<span class="text-headline-md align-top">°C</span></span>
-<span class="text-label-md font-label-md text-on-surface-variant">Partly Cloudy</span>
+<span class="block font-headline-xl text-[56px] leading-tight text-on-surface"><span id="mainTempDisplay">--</span><span class="text-headline-md align-top">°C</span></span>
+<span id="mainConditionDisplay" class="text-label-md font-label-md text-on-surface-variant">Scanning...</span>
 </div>
 </div>
 </div>
@@ -345,31 +341,111 @@
 </div>
 </div>
 </div>
-<!-- Precipitation Map Placeholder Section -->
-<section class="mt-gutter-md">
-<div class="glass-card rounded-[32px] overflow-hidden shadow-sm">
-<div class="p-6 flex justify-between items-center">
-<div>
-<h3 class="text-on-surface font-headline-md text-headline-md">Regional Rain Map</h3>
-<p class="text-body-md text-on-surface-variant">Precise precipitation tracking for your sector</p>
-</div>
-<div class="flex gap-2">
-<button class="px-4 py-2 bg-surface-container-high rounded-xl text-label-md font-label-md text-on-surface hover:bg-surface-variant transition-colors">Layers</button>
-<button class="px-4 py-2 bg-primary text-on-primary rounded-xl text-label-md font-label-md hover:bg-primary-container transition-colors">Full Map</button>
-</div>
-</div>
-<div class="h-[300px] w-full bg-surface-container relative">
-<div class="absolute inset-0 grayscale opacity-40" data-alt="A detailed satellite-style topographic map of Punjab's agricultural landscape, showing lush green farm plots separated by clean irrigation canals and rural roads. The map features modern data visualization overlays with semi-transparent blue ripples indicating recent rainfall areas and green markers for weather stations. High-end, technical UI look with a clean professional color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUW48MjGWakqazY17T_vYqzSt-JyE58SdeEcxbX1u0nVOpo4gjI7uSo4wYQfbGjXmnbDerqc8IsqkxpHzoPCIAqZLx_ix7Bii_iAanEL8XGNr5AIJjcAc8IR3JSwGj7cv8z1eYtUX5KwbrBEQMDw1GzTfoDIbEZyDp5Vb3lljQMt7IBUap7BdjgEcTZK4D7OZFsnK3lqxBCwJ0Xnn9T3xU2DnW82fspjmAkpXczTNef5R77_XzdqWE')"></div>
-<!-- Mock Map Overlays -->
-<div class="absolute inset-0 flex items-center justify-center">
-<div class="bg-surface/90 backdrop-blur p-4 rounded-2xl shadow-xl border border-primary/20 flex items-center gap-3 animate-pulse">
-<span class="material-symbols-outlined text-primary">rainy</span>
-<span class="text-label-md font-label-md text-on-surface">Light rain detected in Sector 4B</span>
-</div>
-</div>
-</div>
-</div>
+
+<!-- Smart Satellite Rain Prediction Widget -->
+<section class="mt-8">
+    <div class="glass-card rounded-[32px] overflow-hidden shadow-sm relative border-2 border-primary/20">
+        <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-primary/20 rounded-full animate-ping" id="radarPing"></div>
+                    <span class="material-symbols-outlined text-primary text-3xl z-10">satellite_alt</span>
+                </div>
+                <div>
+                    <h3 class="text-on-surface font-headline-md text-2xl font-bold">Smart Rain Prediction</h3>
+                    <p class="text-on-surface-variant font-body-md mt-1" id="predictionStatusText">Initializing satellite scan...</p>
+                </div>
+            </div>
+            
+            <div id="rainResultBadge" class="hidden px-6 py-3 bg-surface-container rounded-2xl flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary" id="rainResultIcon">rainy</span>
+                <span class="text-label-lg font-bold text-on-surface" id="rainResultText">Checking...</span>
+            </div>
+        </div>
+    </div>
 </section>
+
+<!-- Weather Script -->
+<script>
+    async function predictRain() {
+        const topLocation = document.getElementById('topLocationDisplay');
+        const mainLocation = document.getElementById('mainLocationDisplay');
+        const mainTemp = document.getElementById('mainTempDisplay');
+        const mainCondition = document.getElementById('mainConditionDisplay');
+        const statusText = document.getElementById('predictionStatusText');
+        const rainBadge = document.getElementById('rainResultBadge');
+        const rainIcon = document.getElementById('rainResultIcon');
+        const rainText = document.getElementById('rainResultText');
+        const radarPing = document.getElementById('radarPing');
+
+        try {
+            statusText.innerText = "Connecting to GPS satellites...";
+            
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, {timeout: 10000});
+            });
+            
+            statusText.innerText = "Analyzing atmospheric data...";
+            
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            const token = localStorage.getItem("kisanvani_token") || "";
+            const phone_number = token.replace("token_", "");
+
+            const response = await fetch('/api/weather/predict-rain', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    lat: lat,
+                    lon: lon,
+                    phone_number: phone_number
+                })
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch");
+
+            const data = await response.json();
+            
+            // Stop radar animation
+            radarPing.classList.remove('animate-ping');
+            radarPing.classList.add('hidden');
+            
+            // Update UI
+            topLocation.innerText = data.location;
+            mainLocation.innerText = data.location;
+            mainTemp.innerText = Math.round(data.temp);
+            mainCondition.innerText = data.condition;
+            
+            statusText.innerText = `Live data synced for ${data.location}`;
+            
+            // Show rain prediction
+            rainBadge.classList.remove('hidden');
+            if(data.rain_probability > 50) {
+                rainBadge.classList.add('bg-error/10', 'text-error');
+                rainIcon.innerText = 'thunderstorm';
+                rainIcon.classList.replace('text-primary', 'text-error');
+                rainText.innerText = data.prediction_msg;
+                rainText.classList.add('text-error');
+            } else {
+                rainBadge.classList.add('bg-primary/10', 'text-primary');
+                rainIcon.innerText = 'wb_sunny';
+                rainText.innerText = data.prediction_msg;
+                rainText.classList.add('text-primary');
+            }
+            
+        } catch(e) {
+            statusText.innerText = "Could not fetch satellite data. Please allow location access.";
+            radarPing.classList.remove('animate-ping');
+            radarPing.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        predictRain();
+    });
+</script>
+
 
 <!-- Detailed Schedule Modal (Dummy) -->
 <div id="scheduleModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
@@ -616,19 +692,57 @@ document.addEventListener("DOMContentLoaded", () => {
         headerTitle.style.cursor = 'pointer';
         headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
     }
-    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
-    if (menuBtn && menuBtn.innerText.includes('menu')) {
-        menuBtn.parentElement.addEventListener('click', () => {
-            // For mobile, just go to dashboard if menu clicked
-            window.location.href = '/index.html';
-        });
-    }
+    
 });
 </script>
 
 
 
 
-</body>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
 
 </html>

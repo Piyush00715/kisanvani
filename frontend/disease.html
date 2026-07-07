@@ -122,6 +122,42 @@
 </head>
 
 <body class="bg-background text-on-surface font-body-md min-h-screen pb-24">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors bg-primary-container text-on-primary-container">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16 w-full">
 <div class="flex items-center gap-4">
@@ -134,7 +170,7 @@
 <img class="w-full h-full object-cover" data-alt="A professional headshot of a modern farmer in a light-filled office, wearing a clean linen shirt. The lighting is warm and natural, suggesting a successful agribusiness environment. The background shows a hint of digital agricultural charts, maintaining a corporate and tech-savvy mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKLYK8TbXxVmYuqnxOz4-S901osIXhf0RxOz4BZ3crV77wn9aZ2asZadq6ZsmvVibQh72QtnLuw3Ptq87hg3KCEIiUU0cmKsDQWAcZmCk_o8WF7dkqiBU8Ni-UlluXPT3fEmgnw0srpUdbxpDFZjoR1i_r7icmXTFWNxUCoq5lQoI4mL_akPAdhAdmoRXYnshiZLUltTBYhsguUKQPBnrjZML-j5mFQ0rkyaxEgfqAWhsKiMUalvM"/>
 </div>
 </header>
-<main class="pt-24 px-4 md:px-margin-desktop max-w-container-max mx-auto">
+<main class="pt-24 px-4 md:px-8 max-w-7xl mx-auto">
 <!-- Detection Hero Section -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 <!-- Left Column: Upload Area -->
@@ -156,17 +192,24 @@
 <div class="hidden absolute top-0 left-0 w-full scan-line" id="scanningLine"></div>
 </div>
 </div>
-<button class="mt-8 px-8 py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed" id="scanBtn">
+<div class="w-full max-w-lg mt-4 bg-surface-container-lowest/50 rounded-xl border border-outline-variant/30 p-4 text-left">
+    <div class="flex items-center justify-between mb-2">
+        <label class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">mic</span> Add Voice Note
+        </label>
+        <button id="micBtn" class="bg-primary-container text-on-primary-container p-2 rounded-full hover:scale-105 transition-transform shadow-sm" type="button">
+            <span class="material-symbols-outlined" id="micIcon">mic</span>
+        </button>
+    </div>
+    <textarea id="voiceNoteText" class="w-full bg-transparent text-body-md text-on-surface outline-none resize-none placeholder-on-surface-variant/50" rows="2" placeholder="Tap the mic and describe the problem..."></textarea>
+</div>
+<button class="mt-8 px-8 py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center gap-2 shadow-lg active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed mx-auto" id="scanBtn">
 <span class="material-symbols-outlined">biotech</span>
                         Scan for Disease
                     </button>
-</div>
-<!-- Recent History (Asymmetric Accent) -->
-<div class="flex flex-wrap gap-4 pt-4">
-<div class="flex items-center gap-2 px-4 py-2 bg-surface-container rounded-full border border-outline-variant/20">
-<span class="material-symbols-outlined text-sm">history</span>
-<span class="text-label-sm font-label-sm">Recent: Maize Rust (98% match)</span>
-</div>
+<button id="resetBtn" class="hidden mt-4 text-primary font-label-sm text-sm hover:underline mx-auto block">
+                        Scan Another Query
+                    </button>
 </div>
 </div>
 <!-- Right Column: Results Placeholder/Content -->
@@ -264,9 +307,70 @@
         const previewContainer = document.getElementById('previewContainer');
         const imagePreview = document.getElementById('imagePreview');
         const scanBtn = document.getElementById('scanBtn');
+        const micBtn = document.getElementById('micBtn');
+        const micIcon = document.getElementById('micIcon');
+        const voiceNoteText = document.getElementById('voiceNoteText');
         const scanningLine = document.getElementById('scanningLine');
         const emptyResults = document.getElementById('emptyResults');
         const activeResults = document.getElementById('activeResults');
+
+        // Web Speech API for Voice Note
+        let recognition = null;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            
+            const userLang = localStorage.getItem("kisanvani_lang") || "en";
+            recognition.lang = userLang === "hi" ? "hi-IN" : "en-IN";
+
+            recognition.onstart = function() {
+                micIcon.innerText = "mic_off";
+                micBtn.classList.replace("bg-primary-container", "bg-error");
+                micBtn.classList.replace("text-on-primary-container", "text-white");
+                voiceNoteText.placeholder = "Listening...";
+            };
+
+            recognition.onresult = function(event) {
+                let final_transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        final_transcript += event.results[i][0].transcript;
+                    }
+                }
+                if (final_transcript) {
+                    voiceNoteText.value = final_transcript;
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Speech recognition error", event.error);
+                resetMicBtn();
+            };
+
+            recognition.onend = function() {
+                resetMicBtn();
+            };
+        } else {
+            micBtn.style.display = 'none';
+        }
+
+        function resetMicBtn() {
+            micIcon.innerText = "mic";
+            micBtn.classList.replace("bg-error", "bg-primary-container");
+            micBtn.classList.replace("text-white", "text-on-primary-container");
+            voiceNoteText.placeholder = "Tap the mic and describe the problem...";
+        }
+
+        micBtn.addEventListener('click', () => {
+            if (recognition) {
+                if (micIcon.innerText === "mic") {
+                    recognition.start();
+                } else {
+                    recognition.stop();
+                }
+            }
+        });
 
         dropzone.addEventListener('click', () => fileInput.click());
 
@@ -278,14 +382,70 @@
                     imagePreview.src = event.target.result;
                     uploadPlaceholder.classList.add('hidden');
                     previewContainer.classList.remove('hidden');
+                    window.capturedFileToUpload = null; // Clear any camera image
                 };
                 reader.readAsDataURL(file);
             }
         });
 
+        // Handle camera capture from sessionStorage
+        function dataURLtoFile(dataurl, filename) {
+            var arr = dataurl.split(','),
+                mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[arr.length - 1]), 
+                n = bstr.length, 
+                u8arr = new Uint8Array(n);
+            while(n--){
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, {type:mime});
+        }
+
+        const capturedImg = sessionStorage.getItem('kisanvani_captured_image');
+        if (capturedImg) {
+            sessionStorage.removeItem('kisanvani_captured_image');
+            const file = dataURLtoFile(capturedImg, 'captured_leaf.jpg');
+            
+            imagePreview.src = capturedImg;
+            uploadPlaceholder.classList.add('hidden');
+            previewContainer.classList.remove('hidden');
+            window.capturedFileToUpload = file;
+            
+            setTimeout(() => {
+                scanBtn.click();
+            }, 500);
+        }
+
+        const resetBtn = document.getElementById('resetBtn');
+
+        resetBtn.addEventListener('click', () => {
+            // Reset form to start a new scan
+            fileInput.value = "";
+            const imgPrev = document.getElementById('imagePreview');
+            const pCont = document.getElementById('previewContainer');
+            const uPlace = document.getElementById('uploadPlaceholder');
+            
+            if (imgPrev) imgPrev.src = "";
+            if (pCont) pCont.classList.add('hidden');
+            if (uPlace) uPlace.classList.remove('hidden');
+            window.capturedFileToUpload = null;
+            
+            voiceNoteText.value = "";
+            activeResults.classList.add('hidden');
+            emptyResults.classList.remove('hidden');
+            
+            scanBtn.innerHTML = `<span class="material-symbols-outlined">biotech</span> Scan for Disease`;
+            scanBtn.classList.replace('bg-on-surface', 'bg-primary');
+            scanBtn.disabled = false;
+            resetBtn.classList.add('hidden');
+        });
+
         scanBtn.addEventListener('click', async () => {
-            if (fileInput.files.length === 0) {
-                alert('Please upload an image first.');
+            const hasImage = fileInput.files.length > 0 || window.capturedFileToUpload;
+            const hasVoiceNote = voiceNoteText.value.trim() !== "";
+            
+            if (!hasImage && !hasVoiceNote) {
+                alert('Please upload an image or add a voice note first.');
                 return;
             }
 
@@ -295,7 +455,19 @@
 
             try {
                 const formData = new FormData();
-                formData.append("image", fileInput.files[0]);
+                if (window.capturedFileToUpload) {
+                    formData.append("image", window.capturedFileToUpload);
+                } else if (fileInput.files.length > 0) {
+                    formData.append("image", fileInput.files[0]);
+                }
+                
+                const token = localStorage.getItem("kisanvani_token");
+                if (token) {
+                    formData.append("phone_number", token.replace("token_", ""));
+                }
+                if (voiceNoteText.value.trim() !== "") {
+                    formData.append("voice_note", voiceNoteText.value.trim());
+                }
 
                 const response = await fetch('/api/disease/predict', {
                     method: 'POST',
@@ -347,6 +519,7 @@
                 activeResults.classList.add('animate-fade-in');
                 scanBtn.innerHTML = `<span class="material-symbols-outlined">check_circle</span> Analysis Complete`;
                 scanBtn.classList.replace('bg-primary', 'bg-on-surface');
+                resetBtn.classList.remove('hidden');
             } catch (err) {
                 alert("Error: " + err.message);
                 scanningLine.classList.add('hidden');
@@ -430,19 +603,57 @@ document.addEventListener("DOMContentLoaded", () => {
         headerTitle.style.cursor = 'pointer';
         headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
     }
-    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
-    if (menuBtn && menuBtn.innerText.includes('menu')) {
-        menuBtn.parentElement.addEventListener('click', () => {
-            // For mobile, just go to dashboard if menu clicked
-            window.location.href = '/index.html';
-        });
-    }
+    
 });
 </script>
 
 
 
 
-</body>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
 
 </html>

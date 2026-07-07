@@ -82,3 +82,67 @@ def get_weather(city: str, phone_number: str = None, soil_moisture: float = None
         
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=400, detail=f"Failed to fetch weather data: {str(e)}")
+
+from pydantic import BaseModel
+
+class LocationRequest(BaseModel):
+    lat: float
+    lon: float
+    phone_number: str = None
+
+@router.post("/predict-rain")
+def predict_rain(req: LocationRequest):
+    if not WEATHER_API_KEY:
+        raise HTTPException(
+            status_code=503, 
+            detail="Weather API key is not configured on the server. Set OPENWEATHERMAP_API_KEY."
+        )
+    
+    url = f"https://api.openweathermap.org/data/2.5/weather?lat={req.lat}&lon={req.lon}&appid={WEATHER_API_KEY}&units=metric"
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        
+        weather_desc = data["weather"][0]["description"].lower()
+        temp = data["main"]["temp"]
+        location_name = data.get("name", "Unknown Location")
+        
+        # Determine Rain Prediction
+        rain_probability = 0
+        prediction_msg = "Clear skies, optimal for field operations."
+        
+        if "rain" in weather_desc or "drizzle" in weather_desc or "thunderstorm" in weather_desc:
+            rain_probability = 85
+            prediction_msg = "Rain detected in your sector. Halt irrigation and spraying."
+        elif "cloud" in weather_desc:
+            rain_probability = 30
+            prediction_msg = "Cloudy conditions. Low chance of immediate rain."
+        
+        # We can also fetch soil moisture for the frontend UI
+        soil_moisture = 45.0
+        try:
+            om_url = f"https://api.open-meteo.com/v1/forecast?latitude={req.lat}&longitude={req.lon}&current=soil_moisture_0_to_7cm"
+            om_resp = requests.get(om_url, timeout=3)
+            if om_resp.status_code == 200:
+                om_data = om_resp.json()
+                volumetric_sm = om_data.get("current", {}).get("soil_moisture_0_to_7cm", 0.45)
+                soil_moisture = round(volumetric_sm * 100, 1)
+        except Exception:
+            pass
+
+        return {
+            "location": location_name,
+            "temp": temp,
+            "condition": weather_desc.title(),
+            "rain_probability": rain_probability,
+            "prediction_msg": prediction_msg,
+            "humidity": data["main"]["humidity"],
+            "wind_speed": data["wind"]["speed"],
+            "pressure": data["main"]["pressure"],
+            "visibility": data.get("visibility", 10000) / 1000,
+            "soil_moisture": soil_moisture
+        }
+    except requests.exceptions.RequestException as e:
+        raise HTTPException(status_code=400, detail=f"Failed to fetch weather prediction: {str(e)}")

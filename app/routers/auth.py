@@ -18,9 +18,16 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             phone_number TEXT UNIQUE NOT NULL,
             state TEXT NOT NULL,
-            preferred_language TEXT NOT NULL
+            preferred_language TEXT NOT NULL,
+            latitude REAL,
+            longitude REAL
         )
     ''')
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN latitude REAL")
+        cursor.execute("ALTER TABLE users ADD COLUMN longitude REAL")
+    except sqlite3.OperationalError:
+        pass # Columns already exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS history (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -72,6 +79,11 @@ def get_language_for_state(state: str) -> str:
     if state in hindi_states:
         return "hi" # Hindi
     return "en" # Default to English for others (can be enhanced later)
+
+class UpdateLocationRequest(BaseModel):
+    phone_number: str
+    latitude: float
+    longitude: float
 
 @router.post("/send-otp")
 def send_otp(request: SendOTPRequest):
@@ -174,6 +186,22 @@ def register_user(request: RegisterRequest):
         "token": f"token_{phone}",
         "preferred_language": lang
     }
+
+@router.post("/update-location")
+def update_location(request: UpdateLocationRequest):
+    phone = request.phone_number.strip()
+    if len(phone) == 10 and phone.isdigit():
+        phone = f"+91{phone}"
+    elif not phone.startswith("+"):
+        phone = f"+{phone}"
+        
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET latitude = ?, longitude = ? WHERE phone_number = ?", 
+                   (request.latitude, request.longitude, phone))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "message": "Location updated successfully"}
 
 @router.get("/history/{phone_number}")
 def get_user_history(phone_number: str):

@@ -128,6 +128,42 @@
 </head>
 
 <body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors bg-primary-container text-on-primary-container">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16 w-full">
 <div class="flex items-center gap-4">
@@ -143,44 +179,8 @@
 </div>
 </header>
 <!-- Navigation Drawer (Desktop Only) -->
-<aside class="hidden md:flex fixed left-0 top-16 bottom-0 w-80 bg-surface border-r border-outline-variant/20 shadow-xl flex-col h-full py-6 pr-4 z-40">
-<div class="px-6 mb-8">
-<div class="flex items-center gap-3 mb-2">
-<span class="material-symbols-outlined text-primary text-3xl">agriculture</span>
-<div>
-<p class="font-headline-md text-headline-md font-bold text-primary">KisanVani</p>
-<p class="text-xs text-on-surface-variant/70 uppercase tracking-widest font-bold">Premium Agri-SaaS</p>
-</div>
-</div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-body-md text-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">potted_plant</span>
-<span class="font-body-md text-body-md">Crop Recommendation</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">biotech</span>
-<span class="font-body-md text-body-md">Disease Detection</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:bg-surface-container-high rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined">wb_sunny</span>
-<span class="font-body-md text-body-md">Weather Advisory</span>
-</a>
-<a class="flex items-center gap-4 py-3 px-6 bg-secondary-container text-on-secondary-container font-bold rounded-r-full transition-all" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">forum</span>
-<span class="font-body-md text-body-md">Communication</span>
-</a>
-</nav>
-<div class="px-6 pt-6 border-t border-outline-variant/10">
-<p class="text-xs text-on-surface-variant/50">v1.0.4</p>
-</div>
-</aside>
 <!-- Main Content Canvas -->
-<main class="pt-20 pb-24 md:pb-8 md:pl-80 min-h-screen px-4 md:px-margin-desktop max-w-7xl mx-auto">
+<main class="pt-20 pb-24 md:pb-8 min-h-screen px-4 md:px-8 max-w-7xl mx-auto">
 <header class="mb-8">
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Communication</h2>
 <p class="text-on-surface-variant font-body-md">Manage your agricultural alerts and bridge language barriers instantly.</p>
@@ -494,19 +494,57 @@ document.addEventListener("DOMContentLoaded", () => {
         headerTitle.style.cursor = 'pointer';
         headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
     }
-    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
-    if (menuBtn && menuBtn.innerText.includes('menu')) {
-        menuBtn.parentElement.addEventListener('click', () => {
-            // For mobile, just go to dashboard if menu clicked
-            window.location.href = '/index.html';
-        });
-    }
+    
 });
 </script>
 
 
 
 
-</body>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
 
 </html>

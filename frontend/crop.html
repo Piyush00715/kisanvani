@@ -128,6 +128,42 @@
 </head>
 
 <body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors bg-primary-container text-on-primary-container">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16">
 <div class="flex items-center gap-4">
@@ -149,94 +185,35 @@
 <div class="lg:col-span-5 space-y-6">
 <div class="space-y-2">
 <h2 class="font-headline-lg text-headline-lg text-primary">Crop Recommendation</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Input your environmental parameters to find the most profitable and suitable crop for your land.</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Tap the button below to auto-detect your environmental parameters via Satellite & Soil data.</p>
 </div>
-<form class="glass-card p-6 rounded-xl border border-outline-variant/20 shadow-sm space-y-6" id="recommendationForm">
-<!-- State Selection -->
-<div class="space-y-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">State</label>
-<div class="relative">
-<select class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md">
-<option disabled="" selected="" value="">Select your state</option>
-<option>Maharashtra</option>
-<option>Punjab</option>
-<option>Karnataka</option>
-<option>Uttar Pradesh</option>
-<option>Gujarat</option>
-</select>
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
-</div>
-</div>
-<!-- Temperature -->
-<div class="space-y-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Temperature in °C</label>
-<div class="relative">
-<input class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 28" type="number"/>
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline">device_thermostat</span>
-</div>
-</div>
-<!-- Month -->
-<div class="space-y-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Month</label>
-<div class="relative">
-<select class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 appearance-none focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md">
-<option disabled="" selected="" value="">Select sowing month</option>
-<option>January</option>
-<option>June</option>
-<option>October</option>
-</select>
-<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-outline">calendar_month</span>
-</div>
-</div>
-<!-- Soil Type -->
-<div class="space-y-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Soil Type</label>
-<div class="relative flex flex-wrap gap-3 mt-2">
-<label class="flex-1 min-w-[100px]">
-<input class="hidden peer" name="soil" type="radio"/>
-<div class="p-3 border border-outline-variant rounded-lg text-center cursor-pointer peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary transition-all hover:bg-surface-container-low">
-<span class="font-label-md text-label-md">Alluvial</span>
-</div>
-</label>
-<label class="flex-1 min-w-[100px]">
-<input class="hidden peer" name="soil" type="radio"/>
-<div class="p-3 border border-outline-variant rounded-lg text-center cursor-pointer peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary transition-all hover:bg-surface-container-low">
-<span class="font-label-md text-label-md">Clayey</span>
-</div>
-</label>
-<label class="flex-1 min-w-[100px]">
-<input class="hidden peer" name="soil" type="radio"/>
-<div class="p-3 border border-outline-variant rounded-lg text-center cursor-pointer peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary transition-all hover:bg-surface-container-low">
-<span class="font-label-md text-label-md">Red</span>
-</div>
-</label>
-</div>
-</div>
-<!-- NPK & pH (Advanced) -->
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="space-y-2">
-        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Nitrogen (N)</label>
-        <input id="inputN" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 50" type="number" value="50"/>
+<div class="glass-card p-6 rounded-xl border border-outline-variant/20 shadow-sm space-y-6 text-center" id="recommendationAction">
+    <div class="w-full flex justify-center py-6">
+        <div class="relative w-32 h-32 rounded-full bg-primary-container/20 flex items-center justify-center pulse-ring">
+            <span class="material-symbols-outlined text-6xl text-primary">satellite_alt</span>
+        </div>
     </div>
-    <div class="space-y-2">
-        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Phosphorus (P)</label>
-        <input id="inputP" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 50" type="number" value="50"/>
+    
+    <div id="loadingStatus" class="hidden text-primary font-label-md animate-pulse h-6">
+        Connecting to satellites...
     </div>
-    <div class="space-y-2">
-        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Potassium (K)</label>
-        <input id="inputK" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 50" type="number" value="50"/>
-    </div>
-    <div class="space-y-2">
-        <label class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">pH Level</label>
-        <input id="inputPH" class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all font-body-md text-body-md" placeholder="e.g. 6.5" type="number" step="0.1" value="6.5"/>
-    </div>
+
+    <button id="smartPredictBtn" class="w-full bg-primary hover:bg-primary/90 text-on-primary font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98] flex justify-center items-center gap-2" onclick="predictCropSmart()" type="button">
+        <span class="material-symbols-outlined">radar</span>
+        Analyze Land via Satellite
+    </button>
 </div>
-<!-- CTA Button -->
-<button class="w-full bg-primary hover:bg-primary/90 text-on-primary font-bold py-4 rounded-xl shadow-lg transition-transform active:scale-[0.98] flex justify-center items-center gap-2" onclick="predictCrop()" type="button">
-<span class="material-symbols-outlined">analytics</span>
-                        Predict Best Crop
-                    </button>
-</form>
+
+<style>
+    @keyframes pulse-ring {
+        0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(0, 107, 44, 0.4); }
+        70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(0, 107, 44, 0); }
+        100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(0, 107, 44, 0); }
+    }
+    .pulse-ring {
+        animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    }
+</style>
 </div>
 <!-- Right Column: Results Placeholder Section -->
 <div class="lg:col-span-7 h-full">
@@ -276,86 +253,60 @@
 <h4 class="font-label-md text-label-md text-on-surface font-bold">Why these crops?</h4>
 <p class="font-body-md text-body-md text-on-surface-variant" id="whyText">Based on the Soil type in your State, these crops offer the highest climate resilience and market price potential. Current soil moisture levels are optimal for initial sowing phases.</p>
 </div>
-<button class="w-full mt-8 border border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary-container/10 transition-colors">
+<button id="viewGuideBtn" class="w-full mt-8 border border-primary text-primary font-bold py-3 rounded-xl hover:bg-primary-container/10 transition-colors">
                         View Detailed Cultivation Guide
                     </button>
 </div>
 </div>
 </div>
 </main>
-<!-- BottomNavBar (Mobile only) -->
-<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/80 backdrop-blur-md border-t border-outline-variant/30 shadow-[0px_-4px_10px_rgba(0,0,0,0.05)] flex justify-around items-center h-20 pb-safe px-2 rounded-t-xl">
-<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-sm text-label-sm">Dashboard</span>
-</div>
-<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined">potted_plant</span>
-<span class="font-label-sm text-label-sm">Crops</span>
-</div>
-<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined">biotech</span>
-<span class="font-label-sm text-label-sm">Detect</span>
-</div>
-<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined">wb_sunny</span>
-<span class="font-label-sm text-label-sm">Weather</span>
-</div>
-<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant/70 px-3 py-1 scale-95 transition-transform duration-150">
-<span class="material-symbols-outlined">forum</span>
-<span class="font-label-sm text-label-sm">Chat</span>
-</div>
-</nav>
-    <script>
-        const monthMap = {
-            "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6,
-            "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12
-        };
-
-        async function predictCrop() {
+<script>
+        async function predictCropSmart() {
             const container = document.getElementById('resultsContainer');
             const success = document.getElementById('successState');
-            const btn = event.currentTarget;
-
-            const selects = document.querySelectorAll('select');
-            const state = selects[0].value;
-            const monthText = selects[1].value;
-            const temp = document.querySelector('input[type="number"]').value;
-            const soilRadio = document.querySelector('input[name="soil"]:checked');
-            const nitrogen = document.getElementById('inputN').value || 0;
-            const phosphorus = document.getElementById('inputP').value || 0;
-            const potassium = document.getElementById('inputK').value || 0;
-            const ph = document.getElementById('inputPH').value || 7.0;
-
-            if (!state || !monthText || !temp || !soilRadio) {
-                alert("Please fill in all fields (State, Temperature, Month, and Soil Type).");
-                return;
-            }
-
-            const month = monthMap[monthText] || 1;
-            const soil_type = soilRadio.nextElementSibling.innerText.trim();
+            const btn = document.getElementById('smartPredictBtn');
+            const loadingStatus = document.getElementById('loadingStatus');
+            const recommendationAction = document.getElementById('recommendationAction');
 
             const token = localStorage.getItem("kisanvani_token") || "";
             const phone_number = token.replace("token_", "");
 
             const originalContent = btn.innerHTML;
-            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Analyzing Data...`;
+            btn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Analyzing...`;
             btn.disabled = true;
+            loadingStatus.classList.remove('hidden');
+
+            const steps = [
+                "Connecting to satellites...",
+                "Fetching live soil topography...",
+                "Analyzing local weather patterns...",
+                "Running AI prediction model..."
+            ];
+            
+            let stepIndex = 0;
+            const stepInterval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    loadingStatus.innerText = steps[stepIndex];
+                    stepIndex++;
+                }
+            }, 800);
 
             try {
-                const response = await fetch('/api/crop/predict', {
+                // Get Geolocation
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {timeout: 10000});
+                });
+                
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                const response = await fetch('/api/crop/predict-smart', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         phone_number: phone_number,
-                        state: state,
-                        temperature: parseFloat(temp),
-                        month: month,
-                        soil_type: soil_type,
-                        nitrogen: parseFloat(nitrogen),
-                        phosphorus: parseFloat(phosphorus),
-                        potassium: parseFloat(potassium),
-                        ph: parseFloat(ph)
+                        lat: lat,
+                        lon: lon
                     })
                 });
 
@@ -388,15 +339,28 @@
                 document.getElementById('profitData').innerText = details.Profitability || "High";
                 
                 const whyText = document.getElementById('whyText');
-                if (whyText) {
-                    whyText.innerText = details.Why || `Based on ${soil_type} Soil in ${state} with pH ${ph}, ${topCrops.join(", ")} are highly recommended.`;
+                if (whyText && data.context) {
+                    const { state, soil_type, temperature } = data.context;
+                    whyText.innerText = `Based on Satellite Analysis for ${state}, the local soil is primarily ${soil_type} and current temperature is ${temperature}°C. ${topCrops.join(", ")} are highly recommended for this climate.`;
+                }
+                
+                const viewGuideBtn = document.getElementById('viewGuideBtn');
+                if (viewGuideBtn) {
+                    viewGuideBtn.onclick = () => alert(`Detailed Cultivation Guide for ${topCrops[0]} is being generated. This feature will be available soon!`);
                 }
 
                 container.classList.add('hidden');
+                recommendationAction.classList.add('hidden');
                 success.classList.remove('hidden');
             } catch (error) {
-                alert("Error: " + error.message);
+                if(error.code === 1) { // PERMISSION_DENIED
+                    alert("Please allow location access so we can analyze your land via satellite.");
+                } else {
+                    alert("Error: " + error.message);
+                }
             } finally {
+                clearInterval(stepInterval);
+                loadingStatus.classList.add('hidden');
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
             }
@@ -459,19 +423,57 @@ document.addEventListener("DOMContentLoaded", () => {
         headerTitle.style.cursor = 'pointer';
         headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
     }
-    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
-    if (menuBtn && menuBtn.innerText.includes('menu')) {
-        menuBtn.parentElement.addEventListener('click', () => {
-            // For mobile, just go to dashboard if menu clicked
-            window.location.href = '/index.html';
-        });
-    }
+    
 });
 </script>
 
 
 
 
-</body>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
 
 </html>

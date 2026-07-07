@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanVani - History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+                    "primary-container": "#00873a",
+                    "primary": "#006b2c",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "on-surface-variant": "#41474d",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container": "#e5eeff"
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+    <script>
+        if (!localStorage.getItem('kisanvani_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-24 md:pb-0 ">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
+<!-- Top AppBar -->
+<nav class="bg-surface/80 backdrop-blur-md text-primary fixed top-0 w-full z-50 border-b border-gray-200 shadow-sm flex justify-between items-center px-4 h-16 w-full">
+    <div class="flex items-center gap-4">
+        <button class="material-symbols-outlined md:hidden p-2 hover:bg-primary-container/10 rounded-full" onclick="window.location.href='index.html'">arrow_back</button>
+        <span class="text-xl font-bold text-primary cursor-pointer" onclick="window.location.href='index.html'">KisanVani</span>
+    </div>
+    <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-surface-container-high border-2 border-primary/20 flex items-center justify-center overflow-hidden cursor-pointer logout-btn" title="Logout">
+            <span class="material-symbols-outlined text-primary">person</span>
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<!-- Main Content -->
+<main class="pt-20 px-4 md:px-10 max-w-7xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold flex items-center gap-2 text-primary">
+            <span class="material-symbols-outlined">history</span> All Activity History
+        </h2>
+        <button onclick="window.location.href='index.html'" class="text-sm bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back
+        </button>
+    </div>
+
+    <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-200">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 border-b border-gray-200 text-gray-600">
+                        <th class="px-6 py-4 font-semibold text-sm">Date & Time</th>
+                        <th class="px-6 py-4 font-semibold text-sm">Action Type</th>
+                        <th class="px-6 py-4 font-semibold text-sm">Details</th>
+                    </tr>
+                </thead>
+                <tbody id="full-history-table" class="divide-y divide-gray-100">
+                    <tr><td colspan="3" class="p-8 text-center text-gray-400">Loading history...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- Activity Modal -->
+<div id="activity-modal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-8 transform transition-transform">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">info</span> Activity Details
+            </h3>
+            <button onclick="closeActivityModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="activity-modal-content" class="text-gray-700 text-sm whitespace-pre-wrap leading-relaxed bg-gray-50 p-4 rounded-2xl border border-gray-200">
+            <!-- Details go here -->
+        </div>
+    </div>
+</div>
+
+<script>
+window.allActivityHistory = [];
+
+function openActivityModal(index) {
+    const item = window.allActivityHistory[index];
+    if (!item) return;
+    
+    let detailsText = item.details;
+    if (item.action_type === 'Disease Detection' && detailsText.includes('|')) {
+        detailsText = detailsText.replace(/\|/g, '\n\n•');
+    }
+    
+    document.getElementById('activity-modal-content').innerText = detailsText;
+    document.getElementById('activity-modal').classList.remove('hidden');
+}
+
+function closeActivityModal() {
+    document.getElementById('activity-modal').classList.add('hidden');
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    // Logout logic
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("kisanvani_token");
+                localStorage.removeItem("kisanvani_lang");
+                window.location.href = "/login.html";
+            }
+        });
+    });
+
+    const token = localStorage.getItem("kisanvani_token");
+    if (!token) return;
+    const phone = encodeURIComponent(token.replace("token_", ""));
+    
+    try {
+        const response = await fetch(`/api/auth/history/${phone}`);
+        if (response.ok) {
+            const data = await response.json();
+            const tbody = document.getElementById("full-history-table");
+            tbody.innerHTML = "";
+            
+            if (data.history && data.history.length > 0) {
+                window.allActivityHistory = data.history;
+                
+                data.history.forEach((item, index) => {
+                    const tr = document.createElement("tr");
+                    tr.className = "hover:bg-green-50 transition-colors cursor-pointer group";
+                    tr.onclick = () => openActivityModal(index);
+                    
+                    const dateObj = new Date(item.timestamp + "Z");
+                    let shortDetails = item.details.length > 80 ? item.details.substring(0, 80) + "..." : item.details;
+                    
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${dateObj.toLocaleString()}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold">${item.action_type}</span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-800 truncate max-w-md">${shortDetails}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                tbody.innerHTML = `<tr><td class="px-6 py-4 text-center text-gray-500" colspan="3">No history found.</td></tr>`;
+            }
+        }
+    } catch (e) {
+        console.error("Failed to load history", e);
+    }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
+</html>

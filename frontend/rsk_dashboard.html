@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rythu Seva Kendra - Expert Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+    </style>
+</head>
+<body class="text-slate-800">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
+    
+    <header class="bg-emerald-700 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl">support_agent</span>
+                <h1 class="text-2xl font-bold tracking-wide">Rythu Seva Kendra <span class="font-normal text-emerald-200">| Command Center</span></h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm bg-emerald-800 px-3 py-1 rounded-full border border-emerald-600">Expert ID: RSK-9042</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="mb-6 flex justify-between items-end">
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">Recent Farmer Queries</h2>
+                <p class="text-slate-500 text-sm mt-1">Review AI diagnoses and voice notes to provide expert follow-up.</p>
+            </div>
+            <button onclick="fetchLogs()" class="bg-white border border-slate-300 text-slate-600 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-slate-50 transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-sm">refresh</span> Refresh Data
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
+                            <th class="p-4 font-semibold">Date & Time</th>
+                            <th class="p-4 font-semibold">Farmer Info</th>
+                            <th class="p-4 font-semibold">Location / Lang</th>
+                            <th class="p-4 font-semibold">AI Diagnosis / Query</th>
+                            <th class="p-4 font-semibold text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsTableBody" class="divide-y divide-slate-100">
+                        <!-- Logs injected here -->
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-slate-400">Loading queries...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function fetchLogs() {
+            const tbody = document.getElementById('logsTableBody');
+            tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400"><span class="material-symbols-outlined animate-spin">refresh</span> Loading...</td></tr>';
+            
+            try {
+                const response = await fetch('/api/rsk/logs');
+                if (!response.ok) throw new Error("Failed to fetch");
+                const data = await response.json();
+                
+                tbody.innerHTML = '';
+                
+                if (data.logs.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">No queries found.</td></tr>';
+                    return;
+                }
+
+                data.logs.forEach(log => {
+                    const date = new Date(log.timestamp).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' });
+                    
+                    const detailsStr = log.details || "";
+                    let diagnosis = "Pending Expert Review";
+                    let voiceNote = "";
+                    
+                    if (detailsStr.includes("Disease:")) {
+                        const parts = detailsStr.split("| Voice Note:");
+                        diagnosis = parts[0].replace("Disease:", "").trim();
+                        if (parts.length > 1) {
+                            voiceNote = parts[1].trim();
+                        }
+                    } else {
+                        diagnosis = detailsStr;
+                    }
+
+                    // Format coordinates safely
+                    let mapLink = "";
+                    if (log.latitude && log.longitude) {
+                        mapLink = `<a href="https://www.google.com/maps/search/?api=1&query=${log.latitude},${log.longitude}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-[14px]">location_on</span> View Map</a>`;
+                    } else {
+                        mapLink = `<span class="text-slate-400 text-xs flex items-center gap-1 mt-1"><span class="material-symbols-outlined text-[14px]">location_off</span> No GPS</span>`;
+                    }
+                    
+                    const statusColor = diagnosis.includes("Pending") ? "bg-amber-100 text-amber-800 border-amber-200" : "bg-emerald-100 text-emerald-800 border-emerald-200";
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 transition-colors";
+                    tr.innerHTML = `
+                        <td class="p-4 text-sm text-slate-600 whitespace-nowrap">${date}</td>
+                        <td class="p-4">
+                            <div class="font-semibold text-slate-800">${log.phone_number}</div>
+                        </td>
+                        <td class="p-4 text-sm text-slate-600">
+                            <div>${log.state || "Unknown State"}</div>
+                            <div class="text-xs text-slate-400 uppercase tracking-wide mt-1">${log.preferred_language || "EN"}</div>
+                            ${mapLink}
+                        </td>
+                        <td class="p-4 max-w-md">
+                            <div class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${statusColor} mb-2">
+                                ${diagnosis}
+                            </div>
+                            ${voiceNote ? `<div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-sm text-slate-700 italic flex items-start gap-2"><span class="material-symbols-outlined text-slate-400 text-sm mt-0.5">mic</span> "${voiceNote}"</div>` : ''}
+                        </td>
+                        <td class="p-4 text-right">
+                            <a href="tel:${log.phone_number}" class="inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-emerald-700 shadow-sm transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[18px]">call</span> Call Farmer
+                            </a>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading logs: ${error.message}</td></tr>`;
+            }
+        }
+
+        // Load immediately
+        fetchLogs();
+    </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
+</html>

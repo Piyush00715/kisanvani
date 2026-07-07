@@ -133,11 +133,47 @@
     </script>
 </head>
 
-<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0 md:pl-80">
+<body class="bg-background text-on-surface min-h-screen pb-24 md:pb-0 ">
+<!-- Mobile Sliding Drawer -->
+<div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+<aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+        <div>
+            <h2 class="font-headline-sm text-2xl font-bold text-primary">KisanVani</h2>
+            <p class="text-sm text-on-surface-variant mt-1 font-medium">Premium Agri-SaaS</p>
+        </div>
+        <button id="closeDrawerBtn" class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container">
+            <span class="material-symbols-outlined text-2xl">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-2 font-body-md text-on-surface-variant">
+        <a href="/index.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors bg-primary-container text-on-primary-container">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="font-label-md font-bold">Dashboard</span>
+        </a>
+        <a href="/crop.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">potted_plant</span>
+            <span class="font-label-md font-bold">Crop Recommendation</span>
+        </a>
+        <a href="/disease.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">biotech</span>
+            <span class="font-label-md font-bold">Disease Detection</span>
+        </a>
+        <a href="/weather.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span class="font-label-md font-bold">Weather Advisory</span>
+        </a>
+        <a href="/voice_sms.html" class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-primary-container/30 hover:text-primary transition-colors ">
+            <span class="material-symbols-outlined">forum</span>
+            <span class="font-label-md font-bold">Communication</span>
+        </a>
+    </nav>
+</aside>
+
 <!-- Top AppBar (Mobile/Web) -->
 <nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md text-primary dark:text-primary-fixed-dim fixed top-0 w-full z-50 border-b border-outline-variant/30 shadow-sm flex justify-between items-center px-4 h-16 w-full">
 <div class="flex items-center gap-4">
-<button class="material-symbols-outlined md:hidden p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full" data-icon="menu">menu</button>
+<button class="material-symbols-outlined p-2 hover:bg-primary-container/10 transition-colors duration-200 rounded-full" data-icon="menu">menu</button>
 <span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">KisanVani</span>
 </div>
 <div class="flex items-center gap-3">
@@ -148,47 +184,8 @@
 </div>
 </nav>
 <!-- Navigation Drawer (Desktop) -->
-<aside class="hidden md:flex flex-col h-full w-80 fixed left-0 top-0 z-[60] bg-surface dark:bg-surface-dim border-r border-outline-variant/20 shadow-xl py-6 pr-4">
-<div class="px-6 mb-8">
-<h1 class="font-headline-md text-headline-md font-bold text-primary">KisanVani</h1>
-<p class="font-body-md text-body-md text-on-surface-variant opacity-70">Premium Agri-SaaS</p>
-</div>
-<nav class="flex flex-col gap-1 grow">
-<a class="flex items-center gap-4 px-6 py-4 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary font-bold rounded-r-full active:scale-98 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span class="font-body-md text-body-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="potted_plant">potted_plant</span>
-<span class="font-body-md text-body-md">Crop Recommendation</span>
-</a>
-<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
-<span class="font-body-md text-body-md">Disease Detection</span>
-</a>
-<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="wb_sunny">wb_sunny</span>
-<span class="font-body-md text-body-md">Weather Advisory</span>
-</a>
-<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-container-high rounded-r-full active:scale-98 transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="forum">forum</span>
-<span class="font-body-md text-body-md">Communication</span>
-</a>
-</nav>
-<div class="px-6 mt-auto border-t border-outline-variant/10 pt-6">
-<div class="flex items-center gap-3 mb-2">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
-</div>
-<div>
-<p class="font-label-md text-label-md">Farmer Profile</p>
-<p class="text-xs text-on-surface-variant">v1.0.4</p>
-</div>
-</div>
-</div>
-</aside>
 <!-- Main Content Canvas -->
-<main class="pt-20 px-4 md:px-margin-desktop md:pt-24 max-w-container-max mx-auto">
+<main class="pt-20 px-4 md:px-8 md:pt-24 max-w-7xl mx-auto">
 <!-- Hero Section -->
 <section class="relative overflow-hidden rounded-3xl bg-primary-container text-on-primary-container p-8 md:p-12 mb-gutter-md shadow-lg">
 <div class="relative z-10">
@@ -199,11 +196,11 @@
                     Empowering Farmers with AI. Your digital companion for optimized yields and sustainable farming.
                 </p>
 <div class="mt-8 flex flex-wrap gap-4">
-<button class="bg-surface text-primary px-6 py-3 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2">
+<button onclick="window.location.href='disease.html'" class="bg-surface text-primary px-6 py-3 rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center gap-2">
 <span class="material-symbols-outlined" data-icon="add">add</span>
                         New Field Scan
                     </button>
-<button class="border border-white/30 text-white px-6 py-3 rounded-full font-label-md text-label-md hover:bg-white/10 transition-all active:scale-95">
+<button onclick="document.getElementById('recent-activity').scrollIntoView({behavior: 'smooth'})" class="border border-white/30 text-white px-6 py-3 rounded-full font-label-md text-label-md hover:bg-white/10 transition-all active:scale-95">
                         View Reports
                     </button>
 </div>
@@ -217,10 +214,10 @@
 <!-- Feature Bento Grid (2x2) -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter-md mb-gutter-md">
 <!-- Crop Recommendation -->
-<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
+<div onclick="window.location.href='crop.html'" class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
 <div class="flex justify-between items-start mb-6">
 <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-<span class="material-symbols-outlined !text-4xl" data-icon="leaf">gleaf</span>
+<span class="material-symbols-outlined !text-4xl">eco</span>
 </div>
 <span class="material-symbols-outlined text-on-surface-variant/30 group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
 </div>
@@ -232,7 +229,7 @@
 <p class="text-xs mt-2 text-on-surface-variant/60 font-label-sm">Soil Health Index: 82%</p>
 </div>
 <!-- Disease Detection -->
-<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
+<div onclick="window.location.href='disease.html'" class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
 <div class="flex justify-between items-start mb-6">
 <div class="w-14 h-14 bg-secondary-container/20 rounded-2xl flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
 <span class="material-symbols-outlined !text-4xl" data-icon="scan">scan</span>
@@ -249,7 +246,7 @@
 </div>
 </div>
 <!-- Weather Advisory -->
-<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 overflow-hidden relative">
+<div onclick="window.location.href='weather.html'" class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 overflow-hidden relative">
 <div class="relative z-10">
 <div class="flex justify-between items-start mb-6">
 <div class="w-14 h-14 bg-surface-container-highest rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
@@ -271,7 +268,7 @@
 </div>
 </div>
 <!-- Voice & SMS -->
-<div class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
+<div onclick="window.location.href='voice_sms.html'" class="glass-card p-8 rounded-3xl group cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
 <div class="flex justify-between items-start mb-6">
 <div class="w-14 h-14 bg-tertiary-container/20 rounded-2xl flex items-center justify-center text-tertiary group-hover:bg-tertiary group-hover:text-white transition-colors duration-300">
 <span class="material-symbols-outlined !text-4xl" data-icon="message">message</span>
@@ -316,9 +313,76 @@
 </table>
 </div>
 </div>
+<div id="view-more-container" class="mt-4 text-center hidden">
+    <a href="history.html" class="text-primary font-label-md text-label-md hover:underline inline-block">View More</a>
+</div>
 </section>
 
+<!-- Activity Modal -->
+<div id="activity-modal" class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+    <div class="bg-surface w-full max-w-lg rounded-3xl shadow-2xl p-6 md:p-8 transform transition-transform">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">info</span> Activity Details
+            </h3>
+            <button onclick="closeActivityModal()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container active:scale-95 transition-all text-on-surface-variant">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="activity-modal-content" class="text-on-surface-variant text-sm font-body-md whitespace-pre-wrap leading-relaxed bg-surface-container/30 p-4 rounded-2xl border border-outline-variant/20">
+            <!-- Details go here -->
+        </div>
+    </div>
+</div>
+
 <script>
+window.allActivityHistory = [];
+
+function openActivityModal(index) {
+    const item = window.allActivityHistory[index];
+    if (!item) return;
+    
+    // Format details nicely
+    let detailsText = item.details;
+    if (item.action_type === 'Disease Detection' && detailsText.includes('|')) {
+        detailsText = detailsText.replace(/\|/g, '\\n\\n•');
+    }
+    
+    document.getElementById('activity-modal-content').innerText = detailsText;
+    document.getElementById('activity-modal').classList.remove('hidden');
+}
+
+function closeActivityModal() {
+    document.getElementById('activity-modal').classList.add('hidden');
+}
+
+function renderHistoryTable(items) {
+    const tbody = document.getElementById("history-table-body");
+    tbody.innerHTML = "";
+    items.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-primary-container/5 transition-colors group cursor-pointer";
+        tr.onclick = () => openActivityModal(index);
+        
+        const dateObj = new Date(item.timestamp + "Z");
+        // Truncate details for the single line view
+        let shortDetails = item.details.length > 60 ? item.details.substring(0, 60) + "..." : item.details;
+        
+        tr.innerHTML = `
+            <td class="px-6 py-4 font-body-md whitespace-nowrap text-sm text-on-surface-variant">${dateObj.toLocaleString()}</td>
+            <td class="px-6 py-4">
+                <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-bold">${item.action_type}</span>
+            </td>
+            <td class="px-6 py-4 font-body-md text-sm truncate max-w-xs">${shortDetails}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderAllHistory() {
+    window.location.href = 'history.html';
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     const token = localStorage.getItem("kisanvani_token");
     if (!token) return;
@@ -328,27 +392,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await fetch(`/api/auth/history/${phone}`);
         if (response.ok) {
             const data = await response.json();
-            const tbody = document.getElementById("history-table-body");
-            tbody.innerHTML = "";
             
             if (data.history && data.history.length > 0) {
-                data.history.forEach(item => {
-                    const tr = document.createElement("tr");
-                    tr.className = "hover:bg-primary-container/5 transition-colors group";
-                    
-                    const dateObj = new Date(item.timestamp + "Z"); // Add Z to specify UTC if sqlite is in UTC
-                    
-                    tr.innerHTML = `
-                        <td class="px-6 py-4 font-body-md whitespace-nowrap text-sm text-on-surface-variant">${dateObj.toLocaleString()}</td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full text-xs font-bold">${item.action_type}</span>
-                        </td>
-                        <td class="px-6 py-4 font-body-md text-sm">${item.details}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
+                window.allActivityHistory = data.history;
+                
+                // Show only first 3 items initially
+                renderHistoryTable(window.allActivityHistory.slice(0, 3));
+                
+                if (window.allActivityHistory.length > 3) {
+                    document.getElementById('view-more-container').classList.remove('hidden');
+                }
             } else {
-                tbody.innerHTML = `<tr><td class="px-6 py-4 font-body-md text-center" colspan="3">No recent activity found.</td></tr>`;
+                document.getElementById("history-table-body").innerHTML = `<tr><td class="px-6 py-4 font-body-md text-center" colspan="3">No recent activity found.</td></tr>`;
             }
         }
     } catch (e) {
@@ -381,7 +436,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 </a>
 </nav>
 <!-- FAB (Contextual) -->
-<button class="fixed bottom-24 right-6 md:bottom-10 md:right-10 w-16 h-16 bg-primary text-white rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all z-40 flex items-center justify-center group">
+<button onclick="window.location.href='camera.html'" class="fixed bottom-24 right-6 md:bottom-10 md:right-10 w-16 h-16 bg-primary text-white rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all z-40 flex items-center justify-center group">
 <span class="material-symbols-outlined !text-3xl" data-icon="add_a_photo">add_a_photo</span>
 <span class="absolute right-full mr-4 bg-on-surface text-surface text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">Scan Plant</span>
 </button>
@@ -435,7 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     // Profile click to logout
-    const profileImgs = document.querySelectorAll('.w-10.h-10.rounded-full');
+    const profileImgs = document.querySelectorAll('aside .w-10.h-10.rounded-full, header .w-10.h-10.rounded-full');
     profileImgs.forEach(img => {
         img.style.cursor = 'pointer';
         img.title = 'Logout';
@@ -459,19 +514,91 @@ document.addEventListener("DOMContentLoaded", () => {
         headerTitle.style.cursor = 'pointer';
         headerTitle.addEventListener('click', () => { window.location.href = '/index.html'; });
     }
-    const menuBtn = document.querySelector('header button span.material-symbols-outlined');
-    if (menuBtn && menuBtn.innerText.includes('menu')) {
-        menuBtn.parentElement.addEventListener('click', () => {
-            // For mobile, just go to dashboard if menu clicked
-            window.location.href = '/index.html';
-        });
-    }
+    
 });
 </script>
 
 
 
 
-</body>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const token = localStorage.getItem("kisanvani_token");
+                if (token) {
+                    const phone_number = token.replace("token_", "");
+                    try {
+                        await fetch('/api/auth/update-location', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                phone_number: phone_number,
+                                latitude: lat,
+                                longitude: lon
+                            })
+                        });
+                        console.log("Location auto-synced for precise alerts.");
+                    } catch (e) {
+                        console.error("Failed to sync location.");
+                    }
+                }
+            },
+            (error) => {
+                console.log("Geolocation permission denied or failed.", error);
+            }
+        );
+    }
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileDrawerOverlay = document.getElementById('mobileDrawerOverlay');
+    const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    
+    // Find menu button
+    const menuIcons = Array.from(document.querySelectorAll('header .material-symbols-outlined, nav .material-symbols-outlined'));
+    const menuIcon = menuIcons.find(el => el.innerText.trim() === 'menu');
+    
+    if (menuIcon && mobileDrawer && mobileDrawerOverlay) {
+        const menuBtn = menuIcon.tagName === 'BUTTON' ? menuIcon : menuIcon.parentElement;
+        
+        // Remove old event listeners if any by cloning
+        const newMenuBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newMenuBtn, menuBtn);
+        
+        newMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileDrawerOverlay.classList.remove('hidden');
+            // small delay for display block to take effect before opacity transition
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.remove('opacity-0');
+                mobileDrawer.classList.remove('-translate-x-full');
+            }, 10);
+        });
+    }
+
+    function closeDrawer() {
+        if(mobileDrawer && mobileDrawerOverlay) {
+            mobileDrawer.classList.add('-translate-x-full');
+            mobileDrawerOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawerOverlay.classList.add('hidden');
+            }, 300);
+        }
+    }
+
+    if(closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if(mobileDrawerOverlay) mobileDrawerOverlay.addEventListener('click', closeDrawer);
+});
+</script>
+\n</body>
 
 </html>
