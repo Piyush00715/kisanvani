@@ -49,7 +49,7 @@ async def predict_disease(
         messages.append({"role": "user", "content": content_parts})
         
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=300
         )
@@ -82,22 +82,22 @@ async def predict_disease(
             save_user_history(
                 phone_number,
                 "Disease Detection",
-                f"Diagnosed: {title}",
-                f"Description: {description} | Treatment: {prevent} | Supplement: {supplement_name}"
+                f"Diagnosed: {title} | Description: {description} | Treatment: {prevent} | Supplement: {supplement_name}"
             )
 
         return {
-            "title": title,
-            "desc": description,
-            "prevent": prevent,
-            "image_url": image_url,
-            "sname": supplement_name,
-            "simage": supplement_image_url,
-            "buy_link": supplement_buy_link
+            "disease": title,
+            "description": description,
+            "prevention": prevent,
+            "recommended_supplement": {
+                "name": supplement_name,
+                "image_url": supplement_image_url,
+                "buy_link": supplement_buy_link
+            }
         }
         
     except HTTPException:
         raise
     except Exception as e:
         print("Prediction error:", e)
-        raise HTTPException(status_code=500, detail="Error analyzing the image or voice note.")
+        raise HTTPException(status_code=500, detail=f"Error analyzing the image or voice note: {str(e)}")
