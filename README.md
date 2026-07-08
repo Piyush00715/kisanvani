@@ -33,6 +33,8 @@ KisanVani proactively warns farmers via SMS in their local language.
 
 ### 6. RSK (Raitha Samparka Kendra) Expert Dashboard
 - A specialized portal for agricultural experts to broadcast emergency warnings to registered farmers via translated SMS.
+- **Access URL:** `/rsk` (e.g. `https://kisanvani.onrender.com/rsk`)
+- **Login Credentials:** Username: `admin` | Password: `admin@123`
 
 ## 🛠️ Tech Stack
 - **Frontend:** HTML5, CSS3, Vanilla JavaScript, Tailwind CSS.
