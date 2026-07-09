@@ -12,6 +12,15 @@
     </style>
 </head>
 <body class="text-slate-800">
+<script>
+    if (!sessionStorage.getItem('rsk_auth')) {
+        window.location.href = '/rsk';
+    }
+    function logoutRSK() {
+        sessionStorage.removeItem('rsk_auth');
+        window.location.href = '/rsk';
+    }
+</script>
 <!-- Mobile Sliding Drawer -->
 <div id="mobileDrawerOverlay" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
 <aside id="mobileDrawer" class="fixed top-0 left-0 h-full w-72 bg-surface z-[100] transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
@@ -49,7 +58,7 @@
         <div class="mt-6">
             <button onclick="logoutUser()" class="flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-primary text-white hover:opacity-90 transition-all w-full shadow-md active:scale-95">
                 <span class="material-symbols-outlined">logout</span>
-                <span class="font-label-md font-bold">Logout</span>
+                <span class="font-label-md font-bold">Logout App</span>
             </button>
         </div>
     </nav>
@@ -63,7 +72,10 @@
                 <h1 class="text-2xl font-bold tracking-wide">Rythu Seva Kendra <span class="font-normal text-emerald-200">| Command Center</span></h1>
             </div>
             <div class="flex items-center gap-4">
-                <span class="text-sm bg-emerald-800 px-3 py-1 rounded-full border border-emerald-600">Expert ID: RSK-9042</span>
+                <span class="text-sm bg-emerald-800 px-3 py-1 rounded-full border border-emerald-600 hidden md:block">Expert ID: RSK-9042</span>
+                <button onclick="logoutRSK()" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold transition-colors">
+                    <span class="material-symbols-outlined text-sm">logout</span> Logout
+                </button>
             </div>
         </div>
     </header>

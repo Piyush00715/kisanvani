@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSK Expert Login - KisanVani</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <style>
+        body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-8 shadow-xl">
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-700 mb-4">
+                <span class="material-symbols-outlined text-4xl">admin_panel_settings</span>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">RSK Expert Login</h1>
+            <p class="text-gray-500 mt-2">Raitha Samparka Kendra Portal</p>
+        </div>
+
+        <div id="errorBox" class="hidden mb-4 bg-red-100 text-red-700 p-3 rounded-lg text-sm text-center font-medium">
+            Incorrect username or password.
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Username</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-3 text-gray-400">person</span>
+                    <input id="username" type="text" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all" placeholder="Enter username" required>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-3 text-gray-400">lock</span>
+                    <input id="password" type="password" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all" placeholder="Enter password" required>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-xl font-bold hover:bg-green-800 transition-all">
+                Login to Dashboard
+            </button>
+        </form>
+
+        <div class="mt-8 bg-green-50 p-4 rounded-xl border border-green-100 text-center">
+            <p class="text-xs text-green-800 font-semibold mb-1">DEMO CREDENTIALS:</p>
+            <p class="text-sm text-green-700">Username: <strong>admin</strong></p>
+            <p class="text-sm text-green-700">Password: <strong>admin@123</strong></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorBox = document.getElementById('errorBox');
+
+            if (user === 'admin' && pass === 'admin@123') {
+                sessionStorage.setItem('rsk_auth', '1');
+                window.location.href = '/rsk_dashboard.html';
+            } else {
+                errorBox.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
